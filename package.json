@@ -1,0 +1,28 @@
+{
+  "name": "v2ex-api-egg",
+  "version": "1.0.0",
+  "description": "v2ex api bridge powered by egg",
+  "private": true,
+  "dependencies": {
+    "egg": "^1.0.0-rc.2"
+  },
+  "devDependencies": {
+    "egg-bin": "^2.2.3",
+    "egg-mock": "^3.0.1",
+    "supertest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=7.6.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "egg-bin dev",
+    "test": "egg-bin test"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "indexxuan",
+  "license": "MIT"
+}
