@@ -2,7 +2,7 @@
  *  @Config file
  *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
- *  Mail   : pengrui@iwaimai.baidu.com
+ *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 03 Mar 2017 03:49:18 PM CST
  */
 

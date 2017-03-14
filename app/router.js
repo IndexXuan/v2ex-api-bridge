@@ -1,8 +1,8 @@
 /**
- *  @Router 
+ *  @Router Config
  *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
- *  Mail   : pengrui@iwaimai.baidu.com
+ *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 03 Mar 2017 03:22:10 PM CST
  */
 
@@ -29,7 +29,7 @@ module.exports = app => {
   // @topics
   app.get('v2ex', '/api/v2/topics/latest', 'topics.latest')
   app.get('v2ex', '/api/v2/topics/hot', 'topics.hot')
-  app.get('v2ex', '/api/v2/topics/show/:id', 'topics.show')
+  app.get('v2ex', '/api/v2/topics/:id', 'topics.show')
   app.get('v2ex', '/api/v2/topics/all/:type/:value', 'topics.getAllByType')
 
   // @repies
@@ -48,12 +48,14 @@ module.exports = app => {
   // http://localhost:7001/nodes/name/vim
   // http://localhost:7001/nodes/id/249
   
-  // http://localhost:7001/topics/show/346957
+  // http://localhost:7001/topics/latest
+  // http://localhost:7001/topics/hot
+  // http://localhost:7001/topics/346957
   // http://localhost:7001/topics/all/username/Livid
   // http://localhost:7001/topics/all/node_name/vim?page=2
   // http://localhost:7001/topics/all/node_id/249
   
-  // http://localhost:7001/replies/344499/?page=1&page_size=20 // page_size貌似没用...
+  // http://localhost:7001/replies/344499?page=1&page_size=20 // page_size貌似没用...
   
 } // /.router
 

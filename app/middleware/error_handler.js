@@ -2,13 +2,15 @@
  *  @Middleware error handler
  *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
- *  Mail   : pengrui@iwaimai.baidu.com
+ *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 03 Mar 2017 03:44:36 PM CST
  */
 
 module.exports = app => {
+
   return async (ctx, next) => {
     try {
+      // next is function, should be invoked
       await next()
     } catch (err) {
       // 所有的异常都在 app 上触发一个 error 事件，框架会记录一条错误日志
@@ -25,7 +27,8 @@ module.exports = app => {
         ctx.body.detail = err.errors
       }
       ctx.status = status
-    }
-  }
+    } // /.catch
+  } // /. async function
+
 }
 

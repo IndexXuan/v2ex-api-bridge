@@ -1,8 +1,9 @@
 /**
  *  @Controller
+ *  @Module topics
  *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
- *  Mail   : pengrui@iwaimai.baidu.com
+ *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 03 Mar 2017 03:23:34 PM CST
  */
 
@@ -14,7 +15,6 @@
  */
 
 module.exports = app => {
-
   return class TopicsController extends app.Controller {
 
     async latest (ctx) {
@@ -30,17 +30,18 @@ module.exports = app => {
     }
 
     async getAllByType (ctx) {
+      // validate the params
       ctx.validate({
         username: { type: 'string', required: false },
         node_name: { type: 'string', required: false },
         node_id: { type: 'string', required: false }
       }, ctx.params)
 
+      // set default page in controller
       ctx.params = Object.assign(ctx.params, { page: ctx.query.page || 1 })
       ctx.body = await ctx.service.topics.getAllByType(ctx.params)
     }
 
   } // /.class=>TopicsController
-
 }
 

@@ -8,7 +8,6 @@
  */
 
 module.exports = app => {
-
   return class SiteController extends app.Controller {
 
     async info (ctx) {
@@ -20,5 +19,4 @@ module.exports = app => {
     }
 
   } // /.class=>SiteController
-
 }

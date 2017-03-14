@@ -1,6 +1,6 @@
 /**
  *  @Test
- *  @Module topics@service
+ *  @Module topics#service
  *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com

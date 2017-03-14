@@ -2,12 +2,11 @@
  *  @Service topic
  *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
- *  Mail   : pengrui@iwaimai.baidu.com
+ *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 03 Mar 2017 03:31:22 PM CST
  */
 
 module.exports = app => {
-
   return class TopicsService extends app.Service {
 
     constructor (ctx) {
@@ -74,6 +73,5 @@ module.exports = app => {
     }
 
   } // /.class=>TopicsController
-
 }
 

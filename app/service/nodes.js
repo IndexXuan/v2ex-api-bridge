@@ -8,7 +8,6 @@
  */
 
 module.exports = app => {
-
   return class NodeService extends app.Service {
 
     constructor (ctx) {
@@ -64,6 +63,5 @@ module.exports = app => {
     }
 
   } // /.class=>NodeService
-
 }
 

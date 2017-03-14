@@ -1,6 +1,6 @@
 /**
  *  @Test
- *  @Module topics@controller
+ *  @Module topics#controller
  *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
@@ -51,7 +51,7 @@ describe('test/app/controller/topics.test.js', () => {
 
   it('3 should return target topic', async () => {
     const r = await request(app.callback())
-      .get('/api/v2/topics/show/346957')
+      .get('/api/v2/topics/346957')
       .expect(200)
 
     assert(Array.isArray(r.body))

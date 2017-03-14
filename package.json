@@ -1,7 +1,7 @@
 {
-  "name": "v2ex-api-egg",
+  "name": "v2ex-api-bridge",
   "version": "1.0.0",
-  "description": "v2ex api bridge powered by egg",
+  "description": "V2EX APIs powered by egg(Node.js >= 7.6) with full unit test",
   "private": true,
   "dependencies": {
     "egg": "^1.0.0-rc.2"
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/IndexXuan/v2ex-api"
   },
   "author": "indexxuan",
   "license": "MIT"

@@ -8,7 +8,6 @@
  */
 
 module.exports = app => {
-
   return class NodesController extends app.Controller {
 
     async all (ctx) {
@@ -18,6 +17,6 @@ module.exports = app => {
     async show (ctx) {
       ctx.body = await ctx.service.nodes.show(ctx.params)
     }
-  } // /.class=>NodesController
 
+  } // /.class=>NodesController
 }

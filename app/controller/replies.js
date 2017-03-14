@@ -8,7 +8,6 @@
  */
 
 module.exports = app => {
-
   return class RepiesController extends app.Controller {
 
     async show (ctx) {
@@ -21,5 +20,4 @@ module.exports = app => {
     }
 
   } // /.class=>RepiesController
-
 }
