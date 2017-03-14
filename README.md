@@ -6,7 +6,6 @@
 
 <h1 align="center">v2ex-api-bridge</h1>
 
-## QuickStart
 
 ### Development
 
@@ -14,6 +13,14 @@
 $ npm install
 $ npm run dev
 ```
+
+Node.js >= 7.6.0 required(async & await native supported).
+
+## Features
+
+- ✔︎ Full APIs Wrapped
+- ✔︎ Restful Style
+- ✔︎ 100% Unit Test
 
 ### Unit Test
 
@@ -34,13 +41,13 @@ $ npm run dev
 - more & more
 - develop `webapp` using this apis
 
-### links
+### Links
 
-[v2ex]: https://www.v2ex.com/
-[egg]: https://github.com/eggjs/egg
-[egg-bin]: https://github.com/eggjs/egg-bin
-[mocha]: http://mochajs.org
-[thunk-mocha]: https://npmjs.com/thunk-mocha
-[power-assert]: https://github.com/power-assert-js/power-assert
-[istanbul]: https://github.com/gotwarlost/istanbul
+- [V2EX] (https://www.v2ex.com/)
+- [egg] (https://github.com/eggjs/egg)
+- [egg-bin] (https://github.com/eggjs/egg-bin)
+- [mocha] (http://mochajs.org)
+- [thunk-mocha] (https://npmjs.com/thunk-mocha)
+- [power-assert] (https://github.com/power-assert-js/power-assert)
+- [istanbul] (https://github.com/gotwarlost/istanbul)
 
