@@ -18,7 +18,6 @@ module.exports = app => {
 
     async request (query, opts) {
       const url = `${this.root}/${query}.json`
-      console.log(url)
       opts = Object.assign({
         timeout: [ '30s', '30s' ],
         dataType: 'json'

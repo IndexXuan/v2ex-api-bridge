@@ -60,5 +60,15 @@ describe('test/app/controller/nodes.test.js', () => {
     assert(vim.url.includes('v2ex.com/go/vim'))
   })
 
+  it('4 should validation failed for id', async () => {
+    const r = await request(app.callback())
+      .get('/api/v2/nodes/id/abc')
+      .expect(422)
+
+    const b = r.body
+    assert(b.error === 'Validation Failed')
+    assert(b.detail[0].field === 'id')
+  })
+
 })
 

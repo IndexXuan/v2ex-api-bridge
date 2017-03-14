@@ -35,5 +35,15 @@ describe('test/app/controller/replies.test.js', () => {
     assert(item.content.includes('站长辛苦了'))
   })
 
+  it('2 should validation failed for topic_id', async () => {
+    const r = await request(app.callback())
+      .get('/api/v2/replies/abcdef')
+      .expect(422)
+
+    const b = r.body
+    assert(b.error === 'Validation Failed')
+    assert(b.detail[0].field === 'topic_id')
+  })
+
 }) // /.describe
 

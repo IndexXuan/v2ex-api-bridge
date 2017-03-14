@@ -104,5 +104,25 @@ describe('test/app/controller/topics.test.js', () => {
     }
   })
 
+  it('6 should return all vim\'s topics by node_id', async () => {
+    const r = await request(app.callback())
+      .get('/api/v2/topics/all/node_id/249')
+      .expect(200)
+
+    assert(Array.isArray(r.body))
+    const item = r.body.filter(item => item.id === 344868)[0]
+  })
+
+  it('7 should validation failed for enum type when get all topics', async () => {
+    const r = await request(app.callback())
+      .get('/api/v2/topics/all/not_node_name/vim')
+      .expect(422)
+
+    const b = r.body
+    assert(b.error === 'Validation Failed')
+    assert(b.detail[0].message.includes('one of'))
+    assert(b.detail[0].field === 'type')
+  })
+
 }) // /.describe
 

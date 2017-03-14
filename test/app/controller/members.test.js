@@ -48,4 +48,15 @@ describe('test/app/controller/members.test.js', () => {
     assert(item.username === 'IndexXuan')
   })
 
+  it('3 should validation failed for id', async () => {
+    const r = await request(app.callback())
+      .get('/api/v2/members/id/abcdef')
+      .expect(422)
+
+    const b = r.body
+    assert(b.error === 'Validation Failed')
+    assert(b.detail[0].field === 'id')
+  })
+
 }) // /.describe
+

@@ -15,6 +15,12 @@ module.exports = app => {
     }
 
     async show (ctx) {
+      // validate
+      ctx.validate({
+        id: { type: 'id', required: false },
+        name: { type: 'string', required: false }
+      }, ctx.params)
+
       ctx.body = await ctx.service.nodes.show(ctx.params)
     }
 

@@ -26,15 +26,20 @@ module.exports = app => {
     }
 
     async show (ctx) {
+      // validate
+      ctx.validate({
+        id: { type: 'id', required: true }
+      }, ctx.params)
+
       ctx.body = await ctx.service.topics.show(ctx.params)
     }
 
     async getAllByType (ctx) {
       // validate the params
       ctx.validate({
-        username: { type: 'string', required: false },
-        node_name: { type: 'string', required: false },
-        node_id: { type: 'string', required: false }
+        type: { type: 'enum', values: [ 'username', 'node_name', 'node_id' ], required: true },
+        value: { type: 'string', required: true },
+        page: { type: 'id', required: false }
       }, ctx.params)
 
       // set default page in controller

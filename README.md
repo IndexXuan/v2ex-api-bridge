@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.v2ex.com/">
+  <a href="https://www.v2ex.com/" target="_blank">
     <img src="https://v2ex.assets.uxengine.net/site/logo@2x.png?m=1346064962" alt="V2EX" title="V2EX" />
   </a>
 </p>
@@ -19,7 +19,7 @@ Node.js >= 7.6.0 required(async & await native supported).
 ## Features
 
 - ✔︎ Full APIs Wrapped
-- ✔︎ Restful Style
+- ✔︎ RESTful Style
 - ✔︎ 100% Unit Test
 
 ### Unit Test

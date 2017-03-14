@@ -12,7 +12,7 @@ module.exports = app => {
 
     async show (ctx) {
       ctx.validate({
-        topic_id: { type: 'string', required: true }
+        topic_id: { type: 'id', required: true }
       }, ctx.params)
 
       ctx.params = Object.assign(ctx.params, ctx.query)
