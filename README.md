@@ -10,17 +10,17 @@
 ### Development
 
 ```bash
-$ npm install
+$ npm install(recommend: yarn install)
 $ npm run dev
 ```
 
-Node.js >= 7.6.0 required(async & await native supported).
+Node.js >= 7.6.0 required(support native async & await).
 
 ## Features
 
 - ✔︎ Full APIs Wrapped
 - ✔︎ RESTful Style
-- ✔︎ 100% Unit Test
+- ✔︎ 30+ Case, 100% Unit Test(`BDD`)
 
 ### Unit Test
 

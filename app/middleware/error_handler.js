@@ -19,7 +19,7 @@ module.exports = app => {
       // 生产环境 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
       const error = status === 500 && ctx.app.config.env === 'prod'
         ? 'Internal Server Error'
-        : err.message
+        : `from: middleware, msg: ${err.message}`
       // 从 error 对象上读出各个属性，设置到响应中
       ctx.body = { error }
       // 422 Unprocessable Entity
@@ -27,6 +27,7 @@ module.exports = app => {
         ctx.body.detail = err.errors
       }
       ctx.status = status
+      console.log('-============middleware============')
     } // /.catch
   } // /. async function
 

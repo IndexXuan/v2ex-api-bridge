@@ -10,8 +10,11 @@
 module.exports = app => {
 
   // Todo
-  // 1. find way to set prefix
-  // 2. 多个API貌似没有分页
+  // 1. find way to set router prefix
+  // 2. 多个API貌似没有分页参数
+  
+  // @auth
+  app.get('v2ex', '/api/v2/auth/signin', 'auth.signin')
   
   // @site
   app.get('v2ex', '/api/v2/site/info', 'site.info')
