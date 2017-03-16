@@ -14,6 +14,7 @@ module.exports = app => {
   // 2. 多个API貌似没有分页参数
   
   // @auth
+  app.get('v2ex', '/api/v2/auth/login', 'auth.login')
   app.get('v2ex', '/api/v2/auth/signin', 'auth.signin')
   
   // @site

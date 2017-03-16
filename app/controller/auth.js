@@ -10,8 +10,12 @@
 module.exports = app => {
   return class AuthController extends app.Controller {
 
+    async login (ctx) {
+      ctx.body = await ctx.service.auth.login(ctx.query)
+    }
+
     async signin (ctx) {
-      ctx.body = await ctx.service.auth.signin()
+      ctx.body = await ctx.service.auth.signin(ctx.query)
     }
 
   } // /.class=>AuthController
