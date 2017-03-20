@@ -15,6 +15,7 @@ module.exports = app => {
   
   // @auth
   app.get('v2ex', '/api/v2/auth/login', 'auth.login')
+  app.post('v2ex', '/api/v2/auth/login', 'auth.login')
   app.get('v2ex', '/api/v2/auth/signin', 'auth.signin')
   
   // @site
