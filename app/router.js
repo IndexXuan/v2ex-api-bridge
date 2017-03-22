@@ -9,14 +9,11 @@
 
 module.exports = app => {
 
-  // Todo
-  // 1. find way to set router prefix
-  // 2. 多个API貌似没有分页参数
-  
-  // @auth
-  app.get('v2ex', '/api/v2/auth/login', 'auth.login')
+  // @auth, all require auth
   app.post('v2ex', '/api/v2/auth/login', 'auth.login')
-  app.get('v2ex', '/api/v2/auth/signin', 'auth.signin')
+  // app.get('v2ex', '/api/v2/auth/login', 'auth.login') // for test
+  app.post('v2ex', '/api/v2/auth/login', 'auth.login')
+  // app.get('v2ex', '/api/v2/auth/signin', 'auth.signin') // for test
   
   // @site
   app.get('v2ex', '/api/v2/site/info', 'site.info')
@@ -36,9 +33,15 @@ module.exports = app => {
   app.get('v2ex', '/api/v2/topics/hot', 'topics.hot')
   app.get('v2ex', '/api/v2/topics/:id', 'topics.show')
   app.get('v2ex', '/api/v2/topics/all/:type/:value', 'topics.getAllByType')
+  // require auth
+  app.post('v2ex', '/api/v2/topics/new', 'topics.create')
+  // app.get('v2ex', '/api/v2/topics/new', 'topics.create') // for test
 
   // @repies
   app.get('v2ex', '/api/v2/replies/:topic_id', 'replies.show')
+  // require auth
+  app.post('v2ex', '/api/v2/replies/:topic_id', 'replies.create')
+  // app.get('v2ex', '/api/v2/replies/:topic_id/new', 'replies.create') // for test
 
   /**
    * @examples

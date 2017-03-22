@@ -47,6 +47,16 @@ module.exports = app => {
       ctx.body = await ctx.service.topics.getAllByType(ctx.params)
     }
 
+    async create (ctx) {
+      ctx.validate({
+        title: { type: 'string', required: true },
+        content: { type: 'string', required: true },
+        node_name: { type: 'string', required: true }
+      }, ctx.query)
+
+      ctx.body = await ctx.service.topics.create(ctx.query)
+    }
+
   } // /.class=>TopicsController
 }
 

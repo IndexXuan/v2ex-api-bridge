@@ -19,5 +19,14 @@ module.exports = app => {
       ctx.body = await ctx.service.replies.show(ctx.params)
     }
 
+    async create (ctx) {
+      ctx.validate({
+        topic_id: { type: 'id', required: true }
+      }, ctx.params)
+
+      ctx.params = Object.assign(ctx.params, ctx.query)
+      ctx.body = await ctx.service.replies.create(ctx.params)
+    }
+
   } // /.class=>RepiesController
 }
