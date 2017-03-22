@@ -42,15 +42,17 @@ module.exports = app => {
       // 首页url
       this.homeUrl = 'https://www.v2ex.com/'
 
-      // 登陆相关
+      // login相关
       this.loginUrl = 'https://www.v2ex.com/signin'
-      this.sessionCookieStr = '' // 未登陆的sessionid, 供 `login` 接口放在请求Headers里的 `Set-Cookie` 项中使用
+      this.sessionCookieStr = '' // 未登录的sessionid, 供 `login` 接口放在请求Headers里的 `Set-Cookie` 项中使用
       this.userField = '' // 用户名 输入框埋下的随机表单域
       this.passField = '' // 密码   输入框埋下的随机表单域
       this.once = ''      // input[type="hidden"][name="once"]的随机令牌值(目前是5位数字)
 
-      // 签到领金币url
+      // signin相关
       this.signinUrl = 'https://www.v2ex.com/mission/daily'
+      this.hasSignin = false // 是否还能签到的标志，不能说明已经签到过了
+      this.noAuth = false // 是否有权限签到 
     }
 
     /**
@@ -91,9 +93,9 @@ module.exports = app => {
 
     /**
      * getLoginFields
-     * 获取登陆的各种凭证
+     * 获取登录的各种凭证
      *
-     * @param {String} result - 请求登陆页返回的response，包含html字符串和Headers
+     * @param {String} result - 请求登录页返回的response，包含html字符串和Headers
      */
     getLoginFields (result) {
       const content = result.data
@@ -136,7 +138,7 @@ module.exports = app => {
       // @step1 获取提交的用户名密码
       const { username, password } = params
 
-      // @step2 进入登陆页，获取页面隐藏登陆域以及once的值
+      // @step2 进入登录页，获取页面隐藏登录域以及once的值
       await this.enterLoginPage()
 
       // @step3 设置请求参数
@@ -159,10 +161,10 @@ module.exports = app => {
       // @step6 解析获取到的cookies
       const cs = setCookieParser(result)
        
-      // @step7 判断是否登陆成功并种下客户端cookies
+      // @step7 判断是否登录成功并种下客户端cookies
       let success = false
       cs.forEach(c => {
-        // 查看是否有令牌项的cookie，有就说明登陆成功了
+        // 查看是否有令牌项的cookie，有就说明登录成功了
         if (c.name === this.tokenCookieName) success = true
         this.ctx.cookies.set(c.name, c.value, {
           httpOnly: c.httpOnly,
@@ -189,12 +191,14 @@ module.exports = app => {
      * @param {String} content - 签到页html字符串
      */
     getSigninOnce (content) {
-      try {
-        // update this.once
-        const onceRe = /redeem\?once=(\d+)/
-        this.once = onceRe.exec(content)[1]
-      } catch (e) {
-        throw new Error('已经签到过了')
+      // update this.once
+      const onceRe = /redeem\?once=(\d+)/
+      const onces = onceRe.exec(content)
+      if (onces && onces[1]) {
+        this.once = onces[1]
+      } else {
+        // 说明已经签到了
+        this.hasSignin = true 
       }
     }
 
@@ -215,6 +219,10 @@ module.exports = app => {
         headers: headers
       }) 
 
+      // 权限不足，没登录
+      if (result.status === 302) {
+        this.noAuth = true
+      }
       this.getSigninOnce(result.data)
       return
     }
@@ -254,13 +262,38 @@ module.exports = app => {
       }))
 
       // @step6 重新进入签到页面，确认是否签到成功
-      const success = await this.request(`${this.signinUrl}`, Object.assign(opts, {
+      const page = await this.request(`${this.signinUrl}`, Object.assign(opts, {
         headers: this.commonHeaders
       }))
 
+      const p = JSON.stringify(page)
+
       // 设置API返回值
-      return success 
-    }
+      if (this.noAuth === true) {
+        return {
+          result: false,
+          msg: '请先登录再签到'
+        }
+      }
+      if (this.hasSignin === true) {
+        return {
+          result: false,
+          msg: '今天已经签到了'
+        }
+      }
+      if (p.includes('查看我的账户余额')) {
+        return {
+          result: true,
+          msg: 'ok'
+        }
+      }
+
+      return {
+        result: false,
+        msg: '未知错误',
+        detail: page
+      }
+    } // method#signin
 
   } // /.class=>AuthService
 }
