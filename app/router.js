@@ -6,12 +6,13 @@
  *  Date   : Fri 03 Mar 2017 03:22:10 PM CST
  */
 
+'use strict'
 
 module.exports = app => {
 
   const prefix = '/api/v2'
 
-  // @auth, all require auth
+  // @auth 
   app.post('v2ex', `${prefix}/auth/login`, 'auth.login')
   app.get('v2ex', `${prefix}/auth/login`, 'auth.login') // for test
   app.post('v2ex', `${prefix}/auth/login`, 'auth.login')
@@ -35,13 +36,13 @@ module.exports = app => {
   app.get('v2ex', `${prefix}/topics/hot`, 'topics.hot')
   app.get('v2ex', `${prefix}/topics/:id`, 'topics.show')
   app.get('v2ex', `${prefix}/topics/all/:type/:value`, 'topics.getAllByType')
-  // require auth
+  // auth required
   app.post('v2ex', `${prefix}/topics/new`, 'topics.create')
   // app.get('v2ex', `${prefix}/topics/new`, 'topics.create') // for test
 
   // @repies
   app.get('v2ex', `${prefix}/replies/:topic_id`, 'replies.show')
-  // require auth
+  // auth required
   app.post('v2ex', `${prefix}/replies/:topic_id`, 'replies.create')
   // app.get('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create') // for test
 
@@ -79,5 +80,5 @@ module.exports = app => {
   // @replies
   // http://localhost:7001/replies/344499?page=1&page_size=20 // page_size貌似没用...
   
-} // /.router
+} // /.router map
 

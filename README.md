@@ -16,6 +16,8 @@ $ npm run dev
 
 Node.js >= 7.6.0 required(support native async & await).
 
+* 可以在 `app/router.js` 中查看完整路由配置和demo示例
+
 ## Features
 
 - ✔︎ Full APIs Wrapped
@@ -32,14 +34,13 @@ Node.js >= 7.6.0 required(support native async & await).
 
 - Use `npm start` to run server
 - Use `npm run dev` to dev
-- Use `npm test` to run unit test.
+- Use `npm run lint` to run eslint(eslint not native support es@next now)
+- Use `npm test` to run unit test
+- Use `npm run cov` to run cov
 
 ### Todo
 
-- use `router prefix`
-- use `middleware in router`
-- more & more
-- develop `webapp` using this apis
+- make `pwa` using the APIs
 
 ### Links
 

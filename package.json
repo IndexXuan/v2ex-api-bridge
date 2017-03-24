@@ -6,15 +6,19 @@
   "scripts": {
     "start": "node index.js",
     "dev": "egg-bin dev",
+    "lint": "eslint .",
+    "cov": "egg-bin cov",
     "test": "egg-bin test"
   },
   "dependencies": {
     "egg": "^1.0.0-rc.2",
+    "eslint": "^3.18.0",
     "set-cookie-parser": "^2.0.0"
   },
   "devDependencies": {
-    "egg-bin": "^2.2.3",
+    "egg-bin": "^3.1.0",
     "egg-mock": "^3.0.1",
+    "eslint-config-egg": "^3.2.0",
     "supertest": "^3.0.0"
   },
   "engines": {
@@ -26,8 +30,10 @@
   },
   "keywords": [
     "v2ex",
+    "RESTful API",
     "egg",
-    "async-await"
+    "async-await",
+    "unittest"
   ],
   "author": "indexxuan",
   "license": "MIT"
