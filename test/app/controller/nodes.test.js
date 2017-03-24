@@ -66,7 +66,7 @@ describe('test/app/controller/nodes.test.js', () => {
       .expect(422)
 
     const b = r.body
-    assert(b.error === 'Validation Failed')
+    assert(b.error.msg === 'Validation Failed')
     assert(b.detail[0].field === 'id')
   })
 

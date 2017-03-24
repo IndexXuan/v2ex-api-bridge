@@ -21,24 +21,6 @@ module.exports = app => {
     constructor (ctx) {
       super(ctx)
 
-      this.commonHeaders = {
-        "Accept": "text/html,application/xhtml+xml,application/xml",
-        "Origin": "https://www.v2ex.com",
-        "Referer": "https://www.v2ex.com",
-        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
-      }
-
-      this.commonCookies = {
-        tab: 'V2EX_TAB="2|1:0|10:1489746039|8:V2EX_TAB|8:dGVjaA==|b72b63fabe0f8faeff147ac38e26299655d713ad1880feef6679b56d8d1e9f47"',
-        others: 'V2EX_LANG=zhcn; _ga=GA1.2.1254455933.1474272858; _gat=1'
-      }
-
-      // sessionid cookie name 
-      this.sessionCookieName = 'PB3_SESSION'
-
-      // token cookie name 
-      this.tokenCookieName =  'A2'
-
       // 首页url
       this.homeUrl = 'https://www.v2ex.com/'
 
@@ -144,7 +126,7 @@ module.exports = app => {
       // @step3 设置请求参数
       const opts = {
         method: 'POST',
-        headers: Object.assign(this.commonHeaders, { Cookie: this.sessionCookieStr }),
+        headers: Object.assign(this.ctx.commonHeaders, { Cookie: this.sessionCookieStr }),
         data: {
           [this.userField]: username,
           [this.passField]: password,
@@ -165,7 +147,7 @@ module.exports = app => {
       let success = false
       cs.forEach(c => {
         // 查看是否有令牌项的cookie，有就说明登录成功了
-        if (c.name === this.tokenCookieName) success = true
+        if (c.name === this.ctx.tokenCookieName) success = true
         this.ctx.cookies.set(c.name, c.value, {
           httpOnly: c.httpOnly,
           domain: '',
@@ -177,7 +159,7 @@ module.exports = app => {
       // 设置API返回结果
       return {
         result: success,
-        msg: success ? 'ok' : 'sorry! Not get enough `Token`...',
+        msg: success ? 'ok' : '登录失败，请确认用户名密码无误！',
         data: {
           username: username
         }
@@ -209,9 +191,9 @@ module.exports = app => {
      */
     async enterSigninPage () {
 
-      const token = `${this.tokenCookieName}=${this.ctx.cookies.get(this.tokenCookieName)}`
-      const session = `${this.sessionCookieName}=${this.ctx.cookies.get(this.sessionCookieName)}`
-      const headers = Object.assign(this.commonHeaders, { Cookie: `${session}; ${token}` })
+      const session = this.ctx.sessionid
+      const token = this.ctx.token
+      const headers = Object.assign(this.ctx.commonHeaders, { Cookie: `${session}; ${token}` })
 
       const result = await this.request(this.signinUrl, {
         method: 'GET',
@@ -237,12 +219,12 @@ module.exports = app => {
       await this.enterSigninPage()
 
       // @step2 获取客户端凭证和各种cookies
-      const session = `${this.sessionCookieName}=${this.ctx.cookies.get(this.sessionCookieName)}`
-      const token = `${this.tokenCookieName}=${this.ctx.cookies.get(this.tokenCookieName)}`
-      const { tab, others } = this.commonCookies
+      const session = this.ctx.sessionid
+      const token = this.ctx.token
+      const { tab, others } = this.ctx.commonCookies
 
       // @step3 设置Headers
-      const headers = Object.assign(this.commonHeaders,
+      const headers = Object.assign(this.ctx.commonHeaders,
         { Referer: 'https://www.v2ex.com/mission/daily' },
         { Cookie: `${session}; ${token}; ${tab}; ${others};` }
       )
@@ -263,7 +245,7 @@ module.exports = app => {
 
       // @step6 重新进入签到页面，确认是否签到成功
       const page = await this.request(`${this.signinUrl}`, Object.assign(opts, {
-        headers: this.commonHeaders
+        headers: this.ctx.commonHeaders
       }))
 
       const p = JSON.stringify(page)
@@ -290,7 +272,7 @@ module.exports = app => {
 
       return {
         result: false,
-        msg: '未知错误',
+        msg: '签到遇到未知错误',
         detail: page
       }
     } // method#signin

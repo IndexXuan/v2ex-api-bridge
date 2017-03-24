@@ -9,7 +9,7 @@
 const fs = require('fs')
 const path = require('path')
 
-console.log(`========== config.default.js ==========`)
+console.log(`========== config.test.js ==========`)
 
 module.exports = appInfo => {
 
@@ -20,8 +20,8 @@ module.exports = appInfo => {
   // apiBaseUrl
   config.root = 'https://www.v2ex.com/api'
 
-  // 加载 errorHandler 中间件
-  config.middleware = [ 'errorHandler' ],
+  // 测试时不加载任何中间件
+  config.middleware = null,
 
   // 只对 /api 前缀的 url 路径生效
   config.errorHandler = {

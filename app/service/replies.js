@@ -11,31 +11,26 @@ module.exports = app => {
 
   return class RepiesService extends app.Service {
 
+    /**
+     * constructor
+     * @Constructor
+     *
+     * @param {Object} ctx - 请求的上下文对象
+     */
     constructor (ctx) {
       super(ctx)
       this.root = `${app.config.root}/replies`
-
-      this.once = 12345
-
-      this.commonHeaders = {
-        "Accept": "text/html,application/xhtml+xml,application/xml",
-        "Origin": "https://www.v2ex.com",
-        "Referer": "https://www.v2ex.com",
-        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
-      }
-
-      this.commonCookies = {
-        tab: 'V2EX_TAB="2|1:0|10:1489746039|8:V2EX_TAB|8:dGVjaA==|b72b63fabe0f8faeff147ac38e26299655d713ad1880feef6679b56d8d1e9f47"',
-        others: 'V2EX_LANG=zhcn; _ga=GA1.2.1254455933.1474272858; _gat=1'
-      }
-
-      // sessionid cookie name 
-      this.sessionCookieName = 'PB3_SESSION'
-
-      // token cookie name 
-      this.tokenCookieName =  'A2'
+      // 请求需要的一次性签名
+      this.once = ''
     }
 
+    /**
+     * request
+     *
+     * @param {String} query - 请求参数
+     * @param {Object} opts - 请求选项
+     * @returns {Promise}
+     */
     async request (query, opts) {
       const url = `${this.root}/${query}.json`
       opts = Object.assign({
@@ -46,14 +41,27 @@ module.exports = app => {
       return await this.ctx.curl(url, opts)
     }
 
+    /**
+     * show
+     * 获取一个topic的全部回复
+     *
+     * @param {Object} params - 参数
+     * @returns {Promise}
+     */
     async show (params) {
       const result = await this.request('show', {
         data: params
       })
-
       return result.data
     }
 
+    /**
+     * getOnce
+     * 获取一次性签名的工具方法
+     *
+     * @param {String} content - 需要解析的内容
+     * @returns {Promise}
+     */
     getOnce(content) {
       const onceRe = /value=\"(\d+)\" name="once"/
       const onces = onceRe.exec(content)
@@ -62,10 +70,17 @@ module.exports = app => {
       }
     }
 
+    /**
+     * create
+     * 创建一个回复
+     *
+     * @param {Object} params - 参数
+     * @returns {Promise}
+     */
     async create (params) {
-      const token = `${this.tokenCookieName}=${this.ctx.cookies.get(this.tokenCookieName)}`
-      const session = `${this.sessionCookieName}=${this.ctx.cookies.get(this.sessionCookieName)}`
-      const headers = Object.assign(this.commonHeaders, { Cookie: `${session}; ${token}` })
+      const session = this.ctx.sessionid
+      const token = this.ctx.token
+      const headers = Object.assign(this.ctx.commonHeaders, { Cookie: `${session}; ${token}` })
 
       // 进入创建页，获取once
       const url = `https://www.v2ex.com/t/${params.topic_id}`

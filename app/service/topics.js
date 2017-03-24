@@ -9,63 +9,83 @@
 module.exports = app => {
   return class TopicsService extends app.Service {
 
+    /**
+     * constructor
+     * @Constructor
+     *
+     * @param {Object} ctx - 请求的上下文对象
+     */
     constructor (ctx) {
       super(ctx)
       this.root = `${app.config.root}/topics`
-
-      this.once = 12345
-
-      this.commonHeaders = {
-        "Accept": "text/html,application/xhtml+xml,application/xml",
-        "Origin": "https://www.v2ex.com",
-        "Referer": "https://www.v2ex.com",
-        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
-      }
-
-      this.commonCookies = {
-        tab: 'V2EX_TAB="2|1:0|10:1489746039|8:V2EX_TAB|8:dGVjaA==|b72b63fabe0f8faeff147ac38e26299655d713ad1880feef6679b56d8d1e9f47"',
-        others: 'V2EX_LANG=zhcn; _ga=GA1.2.1254455933.1474272858; _gat=1'
-      }
-
-      // sessionid cookie name 
-      this.sessionCookieName = 'PB3_SESSION'
-
-      // token cookie name 
-      this.tokenCookieName =  'A2'
+      // 请求需要的一次性签名
+      this.once = ''
     }
 
+    /**
+     * request
+     * 公共的请求方法
+     *
+     * @param {String} query - 请求参数
+     * @param {Object} opts - 请求选项
+     * @returns {Promise}
+     */
     async request (query, opts) {
       const url = `${this.root}/${query}.json`
       opts = Object.assign({
         timeout: [ '30s', '30s' ],
         dataType: 'json'
       }, opts)
+
       return await this.ctx.curl(url, opts)
     }
 
+    /**
+     * latest
+     * 获取最新的topics
+     *
+     * @returns {Promise}
+     */
     async latest () {
       const result = await this.request('latest')
-
       this.checkSuccess(result)
       return result.data
     }
 
+    /**
+     * hot
+     * 获取最热的topics
+     *
+     * @returns {Promise}
+     */
     async hot () {
       const result = await this.request('hot')
-
       this.checkSuccess(result)
       return result.data
     }
 
+    /**
+     * show
+     * 显示一篇topic
+     *
+     * @param {Object} params - 参数
+     * @returns {Promise}
+     */
     async show (params) {
       const result = await this.request('show', {
         data: params
       })
-
       this.checkSuccess(result)
       return result.data
     }
 
+    /**
+     * getAllByType
+     * 根据类型获取其全部topics enums: [ username, node_name, node_id ]
+     *
+     * @param {Object} params - 参数
+     * @returns {Promise}
+     */
     async getAllByType (params) {
       const data = {}
       data[params.type] = params.value
@@ -73,11 +93,17 @@ module.exports = app => {
       const result = await this.request('show', {
         data: data
       })
-
       this.checkSuccess(result)
       return result.data
     }
 
+    /**
+     * getOnce
+     * 获取一次性签名的工具方法
+     *
+     * @param {String} content - 需要解析的内容
+     * @returns {Promise}
+     */
     getOnce(content) {
       const onceRe = /name="once" value=\"(\d+)/
       const onces = onceRe.exec(content)
@@ -87,18 +113,18 @@ module.exports = app => {
     }
 
     /**
-     * enterCreatePage
-     * 进入创建新主题页面
+     * create
+     * 创建一篇topic
      *
-     * @returns {Promise}
+     * @param {Object} params - 参数
+     * @returns {Object} API返回值
      */
-    async enterCreatePage () {
-    }
-
     async create (params) {
-      const token = `${this.tokenCookieName}=${this.ctx.cookies.get(this.tokenCookieName)}`
-      const session = `${this.sessionCookieName}=${this.ctx.cookies.get(this.sessionCookieName)}`
-      const headers = Object.assign(this.commonHeaders, { Cookie: `${session}; ${token}` })
+      // const session = `${this.sessionCookieName}=${this.ctx.cookies.get(this.sessionCookieName)}`
+      // const token = `${this.tokenCookieName}=${this.ctx.cookies.get(this.tokenCookieName)}`
+      const session = this.ctx.sessionid
+      const token = this.ctx.token
+      const headers = Object.assign(this.ctx.commonHeaders, { Cookie: `${session}; ${token}` })
 
       // 进入创建页，获取once
       const url = 'https://www.v2ex.com/new'
@@ -129,12 +155,17 @@ module.exports = app => {
       } 
     }
 
-    // 封装统一的调用检查函数，可以在查询，创建和更新等 service 中复用
+    /**
+     * checkSuccess
+     * 封装统一的调用检查函数，可以在查询，创建和更新等 service 中复用
+     *
+     * @param {Object} result - 要检查的对象
+     */
     checkSuccess (result) {
       if (result.status !== 200) {
         const errorMsg = result.data && result.data.message
           ? `V2EX API REMOTE SERVER: ${result.data.message}`
-          : 'unknown error'
+          : 'unknown error in checkSuccess@topics.service'
         this.ctx.throw(result.status, errorMsg)
       }
       if (result.data.status === 'error') {

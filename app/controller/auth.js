@@ -11,6 +11,13 @@ module.exports = app => {
   return class AuthController extends app.Controller {
 
     async login (ctx) {
+      const { username, password } = ctx.query
+      if (username == null) {
+        throw new Error('请传入用户名！')
+      }
+      if (password == null) {
+        throw new Error('请传入密码！')
+      }
       ctx.body = await ctx.service.auth.login(ctx.query)
     }
 
