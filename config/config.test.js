@@ -6,6 +6,8 @@
  *  Date   : Fri 03 Mar 2017 03:49:18 PM CST
  */
 
+'use strict'
+
 const fs = require('fs')
 const path = require('path')
 

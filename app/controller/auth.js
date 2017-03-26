@@ -7,9 +7,17 @@
  *  Date   : Tue 14 Mar 2017 03:15:19 PM CST
  */
 
+'use strict'
+
 module.exports = app => {
   return class AuthController extends app.Controller {
-
+    /**
+     * login
+     * 登录
+     *
+     * @param {Object} ctx - 请求上下文
+     * @returns {Promise} - @async
+     */
     async login (ctx) {
       const { username, password } = ctx.query
       if (username == null) {
@@ -21,9 +29,16 @@ module.exports = app => {
       ctx.body = await ctx.service.auth.login(ctx.query)
     }
 
+    /**
+     * signin
+     * 签到
+     *
+     * @param {Object} ctx - 请求上下文
+     * @returns {Promise} - @async
+     */
     async signin (ctx) {
       ctx.body = await ctx.service.auth.signin(ctx.query)
     }
-
   } // /.class=>AuthController
-}
+} // /.exports
+

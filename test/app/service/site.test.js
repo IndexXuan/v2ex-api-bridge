@@ -7,6 +7,8 @@
  *  Date   : Mon 13 Mar 2017 03:41:31 PM CST
  */
 
+'use strict'
+
 const assert = require('assert')
 const mock = require('egg-mock')
 

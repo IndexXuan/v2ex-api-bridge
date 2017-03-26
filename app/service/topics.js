@@ -6,14 +6,15 @@
  *  Date   : Fri 03 Mar 2017 03:31:22 PM CST
  */
 
+'use strict'
+
 module.exports = app => {
   return class TopicsService extends app.Service {
-
     /**
-     * constructor
      * @Constructor
+     * 构造器
      *
-     * @param {Object} ctx - 请求的上下文对象
+     * @param {Object} ctx - 请求的上下文
      */
     constructor (ctx) {
       super(ctx)
@@ -24,11 +25,11 @@ module.exports = app => {
 
     /**
      * request
-     * 公共的请求方法
+     * 封装统一的请求方法
      *
      * @param {String} query - 请求参数
      * @param {Object} opts - 请求选项
-     * @returns {Promise}
+     * @returns {Promise} - @async
      */
     async request (query, opts) {
       const url = `${this.root}/${query}.json`
@@ -44,7 +45,7 @@ module.exports = app => {
      * latest
      * 获取最新的topics
      *
-     * @returns {Promise}
+     * @returns {Promise} - @async
      */
     async latest () {
       const result = await this.request('latest')
@@ -56,7 +57,7 @@ module.exports = app => {
      * hot
      * 获取最热的topics
      *
-     * @returns {Promise}
+     * @returns {Promise} - @async
      */
     async hot () {
       const result = await this.request('hot')
@@ -66,10 +67,10 @@ module.exports = app => {
 
     /**
      * show
-     * 显示一篇topic
+     * 获取一篇topic
      *
      * @param {Object} params - 参数
-     * @returns {Promise}
+     * @returns {Promise} - @async
      */
     async show (params) {
       const result = await this.request('show', {
@@ -84,7 +85,7 @@ module.exports = app => {
      * 根据类型获取其全部topics enums: [ username, node_name, node_id ]
      *
      * @param {Object} params - 参数
-     * @returns {Promise}
+     * @returns {Promise} - @async
      */
     async getAllByType (params) {
       const data = {}
@@ -102,7 +103,6 @@ module.exports = app => {
      * 获取一次性签名的工具方法
      *
      * @param {String} content - 需要解析的内容
-     * @returns {Promise}
      */
     getOnce(content) {
       const onceRe = /name="once" value=\"(\d+)/
@@ -117,16 +117,15 @@ module.exports = app => {
      * 创建一篇topic
      *
      * @param {Object} params - 参数
-     * @returns {Object} API返回值
+     * @returns {Object} - @async
      */
     async create (params) {
-      // const session = `${this.sessionCookieName}=${this.ctx.cookies.get(this.sessionCookieName)}`
-      // const token = `${this.tokenCookieName}=${this.ctx.cookies.get(this.tokenCookieName)}`
+      // step1 获取准备数据
       const session = this.ctx.sessionid
       const token = this.ctx.token
       const headers = Object.assign(this.ctx.commonHeaders, { Cookie: `${session}; ${token}` })
 
-      // 进入创建页，获取once
+      // @step2 进入创建页，获取once
       const url = 'https://www.v2ex.com/new'
       const r = await this.ctx.curl(url, {
         method: 'get',
@@ -135,11 +134,13 @@ module.exports = app => {
         dataType: 'text'
       })
 
+      // @step3 解析得到once
       this.getOnce(r.data)
 
-      // 设置请求参数
+      // @step4 设置请求参数
       const data = Object.assign(params, { once: this.once }, { content: params.content })
 
+      // @step5 发起请求
       const result = await this.ctx.curl(url, {
         method: 'post',
         dataType: 'text',
@@ -147,6 +148,7 @@ module.exports = app => {
         data: data
       })
 
+      // @step6 设置API返回值
       const success = result && result.res && result.res.requestUrls && result.res.requestUrls[0]
       return {
         result: !!success,
@@ -157,7 +159,7 @@ module.exports = app => {
 
     /**
      * checkSuccess
-     * 封装统一的调用检查函数，可以在查询，创建和更新等 service 中复用
+     * 封装统一的调用检查函数
      *
      * @param {Object} result - 要检查的对象
      */
@@ -173,7 +175,6 @@ module.exports = app => {
         this.ctx.throw(500, 'remote response error', { data: result.data, message: result.data.message })
       }
     }
-
   } // /.class=>TopicsController
-}
+} // /.exports
 

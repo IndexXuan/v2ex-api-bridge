@@ -7,9 +7,17 @@
  *  Date   : Fri 10 Mar 2017 03:21:40 PM CST
  */
 
+'use strict'
+
 module.exports = app => {
   return class MembersController extends app.Controller {
-
+    /**
+     * show
+     * 查看一个成员信息
+     *
+     * @param {Object} ctx - 请求上下文
+     * @returns {Promise} - @async
+     */
     async show (ctx) {
       ctx.validate({
         username: { type: 'string', required: false },
@@ -18,7 +26,6 @@ module.exports = app => {
 
       ctx.body = await ctx.service.members.show(ctx.params)
     }
-
   } // /.class=>MemberController
-}
+} // /.exports
 

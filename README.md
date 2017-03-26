@@ -6,31 +6,39 @@
 
 <h1 align="center">v2ex-api-bridge</h1>
 
+## Intro
 
-### Development
+`V2EX API Bridge`: 提供论坛公开API的封装和私有API的挖掘实现，目前支持 `登录，签到，发帖，回帖` 等功能.  
+
+- 参考：
+- [官方API] (https://www.v2ex.com/p/7v9TEc53)
+- [V2EX-API整理] (https://github.com/djyde/V2EX-API)
+
+## Development
 
 ```bash
 $ npm install(recommend: yarn install)
 $ npm run dev
 ```
 
-Node.js >= 7.6.0 required(support native async & await).
+require Node.js 7.6.0+ (async & await)
 
-* 可以在 `app/router.js` 中查看完整路由配置和demo示例
+* 可以在 `app/router.js` 中查看完整路由配置和demo示例链接
 
 ## Features
 
 - ✔︎ Full APIs Wrapped
 - ✔︎ RESTful Style
-- ✔︎ 30+ Case, 100% Unit Test(`BDD`)
+- ✔︎ 30+ Case, 90%+ Unit Test(`BDD`)
+- ✔︎ Hot Reload in Dev
 
-### Unit Test
+## Unit Test
 
-- [mocha], [thunk-mocha], [power-assert], [istanbul] is build-in to [egg-bin], so you can just use it.
-- [power-assert] is very powerful.
+- `mocha`, `thunk-mocha`, `power-assert`, `istanbul` is build-in to [egg-bin], so you can just use it.
+- `power-assert` is very powerful, No API is the best API.
 - see [egg unit test docs](https://eggjs.org/core/unittest) for more detail.
 
-### npm scripts
+## npm scripts
 
 - Use `npm start` to run server
 - Use `npm run dev` to dev
@@ -38,11 +46,11 @@ Node.js >= 7.6.0 required(support native async & await).
 - Use `npm test` to run unit test
 - Use `npm run cov` to run cov
 
-### Todo
+## Todo
 
 - make `pwa` using the APIs
 
-### Links
+## Links
 
 - [V2EX] (https://www.v2ex.com/)
 - [egg] (https://github.com/eggjs/egg)

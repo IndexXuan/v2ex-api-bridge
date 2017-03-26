@@ -6,12 +6,15 @@
  *  Date   : Fri 24 Mar 2017 11:15:04 AM CST
  */
 
+'use strict'
+
 // sessionid cookie name 
 const sessionCookieName = 'PB3_SESSION'
 
 // token cookie name 
 const tokenCookieName =  'A2'
 
+/* istanbul ignore next */
 module.exports = {
   get sessionCookieName () {
     return sessionCookieName 
@@ -36,8 +39,9 @@ module.exports = {
   },
   get commonCookies () {
     return {
+      // 千万注意大小写，V2EX对这些cookie校验很严格...
       tab: 'V2EX_TAB="2|1:0|10:1489746039|8:V2EX_TAB|8:dGVjaA==|b72b63fabe0f8faeff147ac38e26299655d713ad1880feef6679b56d8d1e9f47"',
-      others: 'v2ex_lang=zhcn; _ga=ga1.2.1254455933.1474272858; _gat=1'
+      others: 'V2EX_LANG=zhcn; _ga=GA1.2.1254455933.1474272858; _gat=1'
     }
   }
 } // /.exports

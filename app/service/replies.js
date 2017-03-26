@@ -7,15 +7,15 @@
  *  Date   : Mon 13 Mar 2017 05:35:26 PM CST
  */
 
+'use strict'
+
 module.exports = app => {
-
   return class RepiesService extends app.Service {
-
     /**
-     * constructor
      * @Constructor
+     * 构造器
      *
-     * @param {Object} ctx - 请求的上下文对象
+     * @param {Object} ctx - 请求的上下文
      */
     constructor (ctx) {
       super(ctx)
@@ -26,10 +26,11 @@ module.exports = app => {
 
     /**
      * request
+     * 封装统一的请求方法
      *
      * @param {String} query - 请求参数
      * @param {Object} opts - 请求选项
-     * @returns {Promise}
+     * @returns {Promise} - @async
      */
     async request (query, opts) {
       const url = `${this.root}/${query}.json`
@@ -46,7 +47,7 @@ module.exports = app => {
      * 获取一个topic的全部回复
      *
      * @param {Object} params - 参数
-     * @returns {Promise}
+     * @returns {Promise} - @async
      */
     async show (params) {
       const result = await this.request('show', {
@@ -60,7 +61,6 @@ module.exports = app => {
      * 获取一次性签名的工具方法
      *
      * @param {String} content - 需要解析的内容
-     * @returns {Promise}
      */
     getOnce(content) {
       const onceRe = /value=\"(\d+)\" name="once"/
@@ -75,14 +75,15 @@ module.exports = app => {
      * 创建一个回复
      *
      * @param {Object} params - 参数
-     * @returns {Promise}
+     * @returns {Promise} - @async
      */
     async create (params) {
+      // @step1 获取准备数据
       const session = this.ctx.sessionid
       const token = this.ctx.token
       const headers = Object.assign(this.ctx.commonHeaders, { Cookie: `${session}; ${token}` })
 
-      // 进入创建页，获取once
+      // @step2 进入创建页，获取once
       const url = `https://www.v2ex.com/t/${params.topic_id}`
       const r = await this.ctx.curl(url, {
         method: 'get',
@@ -91,11 +92,13 @@ module.exports = app => {
         dataType: 'text'
       })
 
+      // @step3 获取once
       this.getOnce(r.data)
 
-      // 设置请求参数
+      // @step4 设置请求参数
       const data = Object.assign(params, { once: this.once }, { content: params.content })
 
+      // @step5 发起请求
       const result = await this.ctx.curl(url, {
         method: 'post',
         dataType: 'text',
@@ -103,6 +106,7 @@ module.exports = app => {
         data: data
       })
 
+      // @step6 设置API返回值
       const success = result && result.res && result.res.requestUrls && result.res.requestUrls[0]
       return {
         result: !!success,
@@ -110,7 +114,6 @@ module.exports = app => {
         url: success
       } 
     }
-
   } // /.class=>RepiesService
+} // /.exports
 
-}

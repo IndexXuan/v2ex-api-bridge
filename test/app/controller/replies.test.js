@@ -7,6 +7,8 @@
  *  Date   : Mon 13 Mar 2017 06:08:18 PM CST
  */
 
+'use strict'
+
 const request = require('supertest')
 const mock    = require('egg-mock')
 const assert  = require('assert')
