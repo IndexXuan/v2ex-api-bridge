@@ -13,11 +13,13 @@
   "dependencies": {
     "egg": "^1.0.0-rc.2",
     "eslint": "^3.18.0",
+    "power-assert": "^1.4.2",
     "set-cookie-parser": "^2.0.0"
   },
   "devDependencies": {
     "egg-bin": "^3.1.0",
     "egg-mock": "^3.0.1",
+    "egg-validate": "^1.0.0",
     "eslint-config-egg": "^3.2.0",
     "supertest": "^3.0.0"
   },
