@@ -6,24 +6,38 @@
 
 <h1 align="center">v2ex-api-bridge</h1>
 
+<p align="center">
+  <a href="https://circleci.com/gh/IndexXuan/v2ex-api-bridge/tree/master">
+    <img src="https://circleci.com/gh/IndexXuan/v2ex-api-bridge/tree/master.svg?style=shield" alt="Build Status">
+  </a>
+  <img src="https://img.shields.io/badge/Vim-Best%20Editor-green.svg" alt="Vim Best Editor" />
+  <br>
+  <br>
+  <a href="https://github.com/airbnb/javascript">
+    <img src="https://cdn.rawgit.com/feross/standard/master/badge.svg" alt="js-standard-style">
+  </a>
+</p>
+
+
 ## Intro
 
-`V2EX API Bridge`: 提供论坛公开API的封装和私有API的挖掘实现，目前支持 `登录，签到，发帖，回帖` 等功能.  
+`V2EX API Bridge`: 提供论坛公开API的封装和私有API的挖掘实现，目前已支持 `登录，签到，发帖，回帖` 等非官方API功能.  
 
-- 参考：
-- [官方API] (https://www.v2ex.com/p/7v9TEc53)
-- [V2EX-API整理] (https://github.com/djyde/V2EX-API)
+- Thanks for：
+- [official API] (https://www.v2ex.com/p/7v9TEc53)
+- [V2EX-API] (https://github.com/djyde/V2EX-API)
 
 ## Development
 
+- require Node.js 7.6.0+ (async & await)
+- recommend yarn install
+- recommend [nvm](https://github.com/creationix/nvm) - the Node.js Version Manager
+
 ```bash
-$ npm install(recommend: yarn install)
+$ npm install
 $ npm run dev
 ```
-
-require Node.js 7.6.0+ (async & await)
-
-* 可以在 `app/router.js` 中查看完整路由配置和demo示例链接
+* see `app/router.js` to find full router config & demo api links
 
 ## Features
 
@@ -34,7 +48,7 @@ require Node.js 7.6.0+ (async & await)
 
 ## Unit Test
 
-- `mocha`, `thunk-mocha`, `power-assert`, `istanbul` is build-in to [egg-bin], so you can just use it.
+- `mocha`, `thunk-mocha`, `power-assert`, `istanbul` is build-in to `egg-bin`, so you can just use it.
 - `power-assert` is very powerful, No API is the best API.
 - see [egg unit test docs](https://eggjs.org/core/unittest) for more detail.
 
@@ -49,6 +63,7 @@ require Node.js 7.6.0+ (async & await)
 ## Todo
 
 - make `pwa` using the APIs
+- parse the `response html` to get more private APIs
 
 ## Links
 
