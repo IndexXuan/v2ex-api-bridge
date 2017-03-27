@@ -8,9 +8,10 @@
     "dev": "egg-bin dev",
     "lint": "eslint .",
     "cov": "egg-bin cov",
-    "test": "egg-bin test"
+    "test": "npm run cov"
   },
   "dependencies": {
+    "codecov": "^2.1.0",
     "egg": "^1.0.0-rc.2",
     "eslint": "^3.18.0",
     "power-assert": "^1.4.2",

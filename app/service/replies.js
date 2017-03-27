@@ -20,6 +20,8 @@ module.exports = app => {
     constructor (ctx) {
       super(ctx)
       this.root = `${app.config.root}/replies`
+      // 默认有权限，后面会判断
+      this.auth = true
       // 请求需要的一次性签名
       this.once = ''
     }
@@ -81,7 +83,11 @@ module.exports = app => {
       // @step1 获取准备数据
       const session = this.ctx.sessionid
       const token = this.ctx.token
-      const headers = Object.assign(this.ctx.commonHeaders, { Cookie: `${session}; ${token}` })
+      const headers = Object.assign({}, this.ctx.commonHeaders, { Cookie: `${session}; ${token}` })
+
+      if (session.includes('undefined')) {
+        this.auth = false 
+      }
 
       // @step2 进入创建页，获取once
       const url = `https://www.v2ex.com/t/${params.topic_id}`
@@ -91,6 +97,7 @@ module.exports = app => {
         headers: headers,
         dataType: 'text'
       })
+
 
       // @step3 获取once
       this.getOnce(r.data)
@@ -108,9 +115,10 @@ module.exports = app => {
 
       // @step6 设置API返回值
       const success = result && result.res && result.res.requestUrls && result.res.requestUrls[0]
+      const msg = !this.auth ? '请先登录再回帖' : success ? 'ok' : '回帖未知错误'
       return {
-        result: !!success,
-        msg: !!success ? 'ok' : 'error',
+        result: !!success && this.auth,
+        msg: msg,
         url: success
       } 
     }

@@ -43,8 +43,8 @@ module.exports = app => {
   // @repies
   app.get('v2ex', `${prefix}/replies/:topic_id`, 'replies.show')
   // auth required
-  app.post('v2ex', `${prefix}/replies/:topic_id`, 'replies.create')
-  // app.get('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create') // for test
+  app.post('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create')
+  app.get('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create') // for test
 
   /**
    * @examples

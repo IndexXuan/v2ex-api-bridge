@@ -125,5 +125,30 @@ describe('test/app/controller/topics.test.js', () => {
     assert(b.detail[0].field === 'type')
   })
 
+  it('8 should validation failed for create topic', async () => {
+    // 模拟 CSRF token
+    app.mockCsrf()
+    const r = await request(app.callback())
+      .post('/api/v2/topics/new?notitle=title&content=content&node_name=egg')
+      .expect(422)
+
+    const b = r.body
+    assert(b.error.msg === 'Validation Failed')
+    assert(b.detail[0].message.includes('required'))
+    assert(b.detail[0].field === 'title')
+  })
+
+  it('9 should create topic failed with no cookie in test case', async () => {
+    // 模拟 CSRF token
+    app.mockCsrf()
+    const r = await request(app.callback())
+      .post('/api/v2/topics/new?title=title&content=content&node_name=egg')
+      .expect(200)
+
+    const b = r.body
+    assert(b.result === false)
+    assert(b.msg === '请先登录再发帖')
+  })
+
 }) // /.describe
 

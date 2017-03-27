@@ -7,5 +7,5 @@
  */
 
 exports.validate = {
-  package: 'egg-validate',
+  package: 'egg-validate'
 }

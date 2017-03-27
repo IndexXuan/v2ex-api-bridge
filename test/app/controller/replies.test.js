@@ -47,5 +47,29 @@ describe('test/app/controller/replies.test.js', () => {
     assert(b.detail[0].field === 'topic_id')
   })
 
+  it('3 should Validation falied in replies/new', async () => {
+    // 模拟 CSRF token
+    app.mockCsrf()
+    const r = await request(app.callback())
+      .post('/api/v2/replies/notavalidid/new')
+      .expect(422)
+
+    const b = r.body
+    assert(b.error.msg === 'Validation Failed')
+    assert(b.detail[0].field === 'topic_id')
+  })
+
+  it('4 should create reply failed in topic with no cookie', async () => {
+    // 模拟 CSRF token
+    app.mockCsrf()
+    const r = await request(app.callback())
+      .post('/api/v2/replies/11111111/new?content=test')
+      .expect(200)
+
+    const b = r.body
+    assert(b.result === false)
+    assert(b.msg === '请先登录再回帖')
+  })
+
 }) // /.describe
 

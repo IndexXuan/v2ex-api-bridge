@@ -116,15 +116,14 @@ module.exports = app => {
      * login获取签名主方法
      *
      * @param {Object} params - 请求参数
+     *   - {String} username - 用户名
+     *   - {String} password - 密码 
      */
-    async login (params) {
-      // @step1 获取提交的用户名密码
-      const { username, password } = params
-
-      // @step2 进入登录页，获取页面隐藏登录域以及once的值
+    async login ({username, password}) {
+      // @step1 进入登录页，获取页面隐藏登录域以及once的值
       await this.enterLoginPage()
 
-      // @step3 设置请求参数
+      // @step2 设置请求参数
       const opts = {
         method: 'POST',
         headers: Object.assign({}, this.ctx.commonHeaders, { Cookie: this.sessionCookieStr }),
@@ -135,16 +134,16 @@ module.exports = app => {
         }
       }
 
-      // @step4 发起请求
+      // @step3 发起请求
       const result = await this.request(this.loginUrl, opts)
 
-      // @step5 更新session并设置在客户端
+      // @step4 更新session并设置在客户端
       await this.enterHomePage()
       
-      // @step6 解析获取到的cookies
+      // @step5 解析获取到的cookies
       const cs = setCookieParser(result)
        
-      // @step7 判断是否登录成功并种下客户端cookies
+      // @step6 判断是否登录成功并种下客户端cookies
       let success = false
       cs.forEach(c => {
         // 查看是否有令牌项的cookie，有就说明登录成功了
@@ -157,7 +156,7 @@ module.exports = app => {
         })
       })
 
-      // @step8 设置API返回结果
+      // @step7 设置API返回结果
       return {
         result: success,
         msg: success ? 'ok' : '登录失败，请确认用户名密码无误！',

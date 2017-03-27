@@ -19,6 +19,8 @@ module.exports = app => {
     constructor (ctx) {
       super(ctx)
       this.root = `${app.config.root}/topics`
+      // 默认有权限，后面会判断
+      this.auth = true 
       // 请求需要的一次性签名
       this.once = ''
     }
@@ -123,7 +125,11 @@ module.exports = app => {
       // step1 获取准备数据
       const session = this.ctx.sessionid
       const token = this.ctx.token
-      const headers = Object.assign(this.ctx.commonHeaders, { Cookie: `${session}; ${token}` })
+      const headers = Object.assign({}, this.ctx.commonHeaders, { Cookie: `${session}; ${token};` })
+
+      if (session.includes('undefined')) {
+        this.auth = false 
+      }
 
       // @step2 进入创建页，获取once
       const url = 'https://www.v2ex.com/new'
@@ -137,7 +143,7 @@ module.exports = app => {
       // @step3 解析得到once
       this.getOnce(r.data)
 
-      // @step4 设置请求参数
+      // @step4 设置请求参数, 模仿真实的传送两遍content
       const data = Object.assign(params, { once: this.once }, { content: params.content })
 
       // @step5 发起请求
@@ -149,10 +155,11 @@ module.exports = app => {
       })
 
       // @step6 设置API返回值
-      const success = result && result.res && result.res.requestUrls && result.res.requestUrls[0]
+      const success = this.auth && result && result.res && result.res.requestUrls && result.res.requestUrls[0]
+      const msg = !this.auth ? '请先登录再发帖' : success ? 'ok' : '发帖未知错误'
       return {
-        result: !!success,
-        msg: !!success ? 'ok' : 'error',
+        result: !!success && this.auth,
+        msg: msg,
         url: success
       } 
     }

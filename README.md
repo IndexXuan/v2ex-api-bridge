@@ -10,6 +10,9 @@
   <a href="https://circleci.com/gh/IndexXuan/v2ex-api-bridge/tree/master">
     <img src="https://circleci.com/gh/IndexXuan/v2ex-api-bridge/tree/master.svg?style=shield" alt="Build Status">
   </a>
+  <a href="https://codecov.io/github/IndexXuan/v2ex-api-bridge?branch=master">
+    <img src="https://codecov.io/github/IndexXuan/v2ex-api-bridge/coverage.svg?branch=master" alt="Code Coverage">
+  </a>
   <img src="https://img.shields.io/badge/Vim-Best%20Editor-green.svg" alt="Vim Best Editor" />
   <br>
   <br>
@@ -17,7 +20,6 @@
     <img src="https://cdn.rawgit.com/feross/standard/master/badge.svg" alt="js-standard-style">
   </a>
 </p>
-
 
 ## Intro
 
