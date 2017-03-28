@@ -38,13 +38,13 @@ module.exports = app => {
   app.get('v2ex', `${prefix}/topics/all/:type/:value`, 'topics.getAllByType')
   // auth required
   app.post('v2ex', `${prefix}/topics/new`, 'topics.create')
-  // app.get('v2ex', `${prefix}/topics/new`, 'topics.create') // for test
+  app.get('v2ex', `${prefix}/topics/new`, 'topics.create') // for test, 谨慎实验
 
-  // @repies
+  // @replies
   app.get('v2ex', `${prefix}/replies/:topic_id`, 'replies.show')
   // auth required
   app.post('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create')
-  app.get('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create') // for test
+  // app.get('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create') // for test, 谨慎实验
 
   /**
    * @examples
@@ -53,7 +53,7 @@ module.exports = app => {
   // @auth 建议打开Router配置中注释掉的的GET模式，方便测试 `登录，签到，发帖，回帖` API
   // http://localhost:7001/api/v2/auth/login?username=${username}&password=${password}
   // http://localhost:7001/api/v2/auth/signin
-  // http://localhost:7001/api/v2/topics/new?title=${title}&content=${content}&node_name=${node_name: e.g.: api}
+  // http://localhost:7001/api/v2/topics/new?title=${title}&content=${content}&node_name=${node_name: e.g.: sandbox}
   // http://localhost:7001/api/v2/replies/${topic_id: e.g.: 349488}/create?content=${content}
 
   // @site
@@ -78,7 +78,7 @@ module.exports = app => {
   // http://localhost:7001/topics/all/node_id/249
   
   // @replies
-  // http://localhost:7001/replies/344499?page=1&page_size=20 // page_size貌似没用...
+  // http://localhost:7001/replies/344499?page=1&page_size=20 // page相关貌似都没用...
   
 } // /.router map
 

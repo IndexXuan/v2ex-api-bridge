@@ -1,9 +1,11 @@
 /**
- *  @Extend Context
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 24 Mar 2017 11:15:04 AM CST
+ */
+
+/**
+ *  @module Extend
  */
 
 'use strict'

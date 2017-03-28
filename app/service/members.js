@@ -1,10 +1,12 @@
 /**
- *  @Service
- *  @Module members
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 10 Mar 2017 03:24:49 PM CST
+ */
+
+/**
+ *  @Service
+ *  @module Members
  */
 
 'use strict'
@@ -62,6 +64,7 @@ module.exports = app => {
      *
      * @param {Object} result - 要检查的数据
      */
+    /* istanbul ignore next */
     checkSuccess (result) {
       if (result.status !== 200) {
         const errorMsg = result.data && result.data.message

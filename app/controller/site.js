@@ -1,10 +1,12 @@
 /**
- *  @Controller 
- *  @Module site
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 10 Mar 2017 02:18:42 PM CST
+ */
+
+/**
+ *  @Controller 
+ *  @module Site
  */
 
 'use strict'

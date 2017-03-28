@@ -1,16 +1,18 @@
 /**
- *  @Service
- *  @Module repies
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Mon 13 Mar 2017 05:35:26 PM CST
  */
 
+/**
+ *  @Service
+ *  @module Replies
+ */
+
 'use strict'
 
 module.exports = app => {
-  return class RepiesService extends app.Service {
+  return class RepliesService extends app.Service {
     /**
      * @Constructor
      * 构造器
@@ -67,6 +69,7 @@ module.exports = app => {
     getOnce(content) {
       const onceRe = /value=\"(\d+)\" name="once"/
       const onces = onceRe.exec(content)
+      /* istanbul ignore next */
       if (onces && onces[1]) {
         this.once = onces[1]
       }
@@ -85,6 +88,7 @@ module.exports = app => {
       const token = this.ctx.token
       const headers = Object.assign({}, this.ctx.commonHeaders, { Cookie: `${session}; ${token}` })
 
+      /* istanbul ignore else */
       if (session.includes('undefined')) {
         this.auth = false 
       }
@@ -122,6 +126,7 @@ module.exports = app => {
         url: success
       } 
     }
-  } // /.class=>RepiesService
+  } // /.class=>RepliesService
 } // /.exports
+
 

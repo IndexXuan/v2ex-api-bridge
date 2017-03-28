@@ -1,9 +1,11 @@
 /**
- *  @Middleware error handler
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 03 Mar 2017 03:44:36 PM CST
+ */
+
+/**
+ *  @module Middleware
  */
 
 'use strict'

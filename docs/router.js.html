@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>router.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Auth.html">Auth</a><ul class='methods'><li data-type='method'><a href="module-Auth.html#login">login</a></li><li data-type='method'><a href="module-Auth.html#signin">signin</a></li></ul></li><li><a href="module-Members.html">Members</a><ul class='methods'><li data-type='method'><a href="module-Members.html#show">show</a></li></ul></li><li><a href="module-Nodes.html">Nodes</a><ul class='methods'><li data-type='method'><a href="module-Nodes.html#all">all</a></li><li data-type='method'><a href="module-Nodes.html#show">show</a></li></ul></li><li><a href="module-Replies.html">Replies</a><ul class='methods'><li data-type='method'><a href="module-Replies.html#create">create</a></li><li data-type='method'><a href="module-Replies.html#show">show</a></li></ul></li><li><a href="module-Router.html">Router</a></li><li><a href="module-Site.html">Site</a><ul class='methods'><li data-type='method'><a href="module-Site.html#info">info</a></li><li data-type='method'><a href="module-Site.html#stats">stats</a></li></ul></li><li><a href="module-Topics.html">Topics</a><ul class='methods'><li data-type='method'><a href="module-Topics.html#create">create</a></li><li data-type='method'><a href="module-Topics.html#hot">hot</a></li><li data-type='method'><a href="module-Topics.html#latest">latest</a></li><li data-type='method'><a href="module-Topics.html#show">show</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">router.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *  @Router Config
+ *  ---------------------------------------------
+ *  Author : IndexXuan(https://github.com/IndexXuan)
+ *  Mail   : indexxuan@gmail.com
+ *  Date   : Fri 03 Mar 2017 03:22:10 PM CST
+ */
+
+'use strict'
+
+/**
+ * @module Router
+ */
+module.exports = app => {
+
+  const prefix = '/api/v2'
+
+  // @auth 
+  app.post('v2ex', `${prefix}/auth/login`, 'auth.login')
+  app.get('v2ex', `${prefix}/auth/login`, 'auth.login') // for test
+  app.post('v2ex', `${prefix}/auth/login`, 'auth.login')
+  app.get('v2ex', `${prefix}/auth/signin`, 'auth.signin') // for test
+  
+  // @site
+  app.get('v2ex', `${prefix}/site/info`, 'site.info')
+  app.get('v2ex', `${prefix}/site/stats`, 'site.stats')
+
+  // @members
+  app.get('v2ex', `${prefix}/members/username/:username`, 'members.show')
+  app.get('v2ex', `${prefix}/members/id/:id`, 'members.show')
+
+  // @nodes
+  app.get('v2ex', `${prefix}/nodes/all`, 'nodes.all')
+  app.get('v2ex', `${prefix}/nodes/id/:id`, 'nodes.show')
+  app.get('v2ex', `${prefix}/nodes/name/:name`, 'nodes.show')
+
+  // @topics
+  app.get('v2ex', `${prefix}/topics/latest`, 'topics.latest')
+  app.get('v2ex', `${prefix}/topics/hot`, 'topics.hot')
+  app.get('v2ex', `${prefix}/topics/:id`, 'topics.show')
+  app.get('v2ex', `${prefix}/topics/all/:type/:value`, 'topics.getAllByType')
+  // auth required
+  app.post('v2ex', `${prefix}/topics/new`, 'topics.create')
+  // app.get('v2ex', `${prefix}/topics/new`, 'topics.create') // for test, 谨慎实验
+
+  // @replies
+  app.get('v2ex', `${prefix}/replies/:topic_id`, 'replies.show')
+  // auth required
+  app.post('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create')
+  // app.get('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create') // for test, 谨慎实验
+
+  /**
+   * @file app/controller/topics#latest
+   * 返回最新topics
+   * @returns {Object} - API返回值
+   * @example
+   * curl -X POST /api/v2/topics/latest
+   * 返回最新topics
+   * @returns {Object} - API返回值
+   * @example
+   * curl -X POST /api/v2/topics/latest
+   * [{
+   *   id: 350959,
+   *   url: "http://www.v2ex.com/t/350959",
+   *   title : "MacBook Pro 13 寸顶配 最新款转让",
+   *   replies: 1,
+   *   content: "由于本人急需用钱，现需要忍痛割爱，电脑于 apple 官方网站购买（有苹果官方发票和可以查看本人购买记录），从 1 月 15 日使用至今，原价 22,328RMB ，现 2w 转让，限北京当面交易。...",
+   *   created: 1490693527,
+   *   member: {
+   *     id: 79264,
+   *     username: "richardzhou",
+   *     vatar_large: "//v2ex.assets.uxengine.net/gravatar/4b89de587467c780f7f2a6b4460b66ea?s=73&amp;d=retro",
+   *     avatar_mini: "//v2ex.assets.uxengine.net/gravatar/4b89de587467c780f7f2a6b4460b66ea?s=24&amp;d=retro",
+   *     avatar_normal: "//v2ex.assets.uxengine.net/gravatar/4b89de587467c780f7f2a6b4460b66ea?s=48&amp;d=retro",
+   *     tagline: ""
+   *   },
+   *   node: {
+   *     id: 10,
+   *     name: "mbp",
+   *     title: "MacBook Pro",
+   *     title_alternative: "MacBook Pro",
+   *     topics: 3021,
+   *     url: "http://www.v2ex.com/go/mbp",
+   *     avatar_large: "//v2ex.assets.uxengine.net/navatar/d3d9/4468/10_large.png?m=1488347268",
+   *     avatar_mini"//v2ex.assets.uxengine.net/navatar/d3d9/4468/10_mini.png?m=1488347268",
+   *     avatar_normal"//v2ex.assets.uxengine.net/navatar/d3d9/4468/10_normal.png?m=1488347268"
+   *   },
+   *   last_modified: 1490693527,
+   *   last_touched: 1490693347
+   * }, {
+   *  ...
+   * }]
+   */
+
+  // @auth 建议打开Router配置中注释掉的的GET模式，方便测试 `登录，签到，发帖，回帖` API
+  // http://localhost:7001/api/v2/auth/login?username=${username}&amp;password=${password}
+  // http://localhost:7001/api/v2/auth/signin
+  // http://localhost:7001/api/v2/topics/new?title=${title}&amp;content=${content}&amp;node_name=${node_name: e.g.: sandbox}
+  // http://localhost:7001/api/v2/replies/${topic_id: e.g.: 349488}/create?content=${content}
+
+  // @site
+  // http://localhost:7001/site/info
+  // http://localhost:7001/site/stats
+  
+  // @members
+  // http://localhost:7001/members/username/IndexXuan
+  // http://localhost:7001/members/id/105309
+  
+  // @nodes
+  // http://localhost:7001/nodes/all
+  // http://localhost:7001/nodes/name/vim
+  // http://localhost:7001/nodes/id/249
+  
+  // @topics
+  // http://localhost:7001/topics/latest
+  // http://localhost:7001/topics/hot
+  // http://localhost:7001/topics/346957
+  // http://localhost:7001/topics/all/username/Livid
+  // http://localhost:7001/topics/all/node_name/vim?page=2
+  // http://localhost:7001/topics/all/node_id/249
+  
+  // @replies
+  // http://localhost:7001/replies/344499?page=1&amp;page_size=20 // page相关貌似都没用...
+  
+} // /.router map
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Mar 28 2017 18:21:06 GMT+0800 (CST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

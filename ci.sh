@@ -1,5 +1,5 @@
 #!/bin/bash
-# copy from vue project
+# copy from: https://github.com/vuejs/vue/blob/dev/build/ci.sh
 
 set -e
 npm test

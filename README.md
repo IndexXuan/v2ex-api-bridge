@@ -45,8 +45,9 @@ $ npm run dev
 
 - ✔︎ Full APIs Wrapped
 - ✔︎ RESTful Style
-- ✔︎ 30+ Case, 90%+ Unit Test(`BDD`)
+- ✔︎ 30+ Case, 100%+ Unit Test(`BDD`)
 - ✔︎ Hot Reload in Dev
+- ✔︎ pre-commit hook to run cov & build docs and host in Github Pages @see `package.json`
 
 ## Unit Test
 

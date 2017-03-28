@@ -1,6 +1,6 @@
 /**
  *  @Test
- *  @Module members#controller
+ *  @module members#controller
  *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com

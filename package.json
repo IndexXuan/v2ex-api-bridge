@@ -8,20 +8,29 @@
     "dev": "egg-bin dev",
     "lint": "eslint .",
     "cov": "egg-bin cov",
-    "test": "npm run cov"
+    "test": "npm run cov",
+    "docs": "jsdoc -c jsdoc.json ./app/controller/*.js"
+  },
+  "pre-commit": {
+    "run": [
+      "docs",
+      "cov"
+    ]
   },
   "dependencies": {
     "codecov": "^2.1.0",
-    "egg": "^1.0.0-rc.2",
+    "egg": "^1.0.0",
     "eslint": "^3.18.0",
-    "power-assert": "^1.4.2",
     "set-cookie-parser": "^2.0.0"
   },
   "devDependencies": {
+    "docdash": "^0.4.0",
     "egg-bin": "^3.1.0",
     "egg-mock": "^3.0.1",
     "egg-validate": "^1.0.0",
     "eslint-config-egg": "^3.2.0",
+    "jsdoc-strip-async-await": "^0.1.0",
+    "pre-commit": "^1.2.2",
     "supertest": "^3.0.0"
   },
   "engines": {

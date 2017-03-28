@@ -1,10 +1,12 @@
 /**
- *  @Service
- *  @Module auth
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Tue 14 Mar 2017 03:19:07 PM CST
+ */
+
+/**
+ *  @Service
+ *  @module Auth
  */
 
 'use strict'
@@ -13,11 +15,13 @@
 const setCookieParser = require('set-cookie-parser')
 
 module.exports = app => {
+  /**
+   * Auth Service Class
+   * @extends app.Service
+   */
   return class AuthService extends app.Service {
     /**
-     * @Constructor
-     * 构造器
-     *
+     * @constructor
      * @param {Objet} ctx - 请求上下文
      */
     constructor (ctx) {
@@ -37,9 +41,7 @@ module.exports = app => {
     }
 
     /**
-     * request
      * 封装统一的请求方法
-     *
      * @param {String} url - 请求地址
      * @param {Object} opts - 请求选项
      * @returns {Promise}
@@ -53,9 +55,7 @@ module.exports = app => {
     }
 
     /**
-     * enterHomePage
      * 请求首页来刷新sessionid cookie
-     *
      * @returns {Promise}
      */
     async enterHomePage () {
@@ -73,32 +73,25 @@ module.exports = app => {
     }
 
     /**
-     * getLoginFields
      * 获取登录的各种凭证
-     *
      * @param {String} result - 请求登录页返回的response，包含html字符串和Headers
      */
     getLoginFields (result) {
       const content = result.data
-
       // get fileds
       const keyRe = /class="sl" name="([0-9A-Za-z]{64})"/g
       this.userField = keyRe.exec(content)[1]
       this.passField = keyRe.exec(content)[1]
-
       // get once
       const onceRe = /value="(\d+)" name="once"/
       this.once = onceRe.exec(content)[1]
-
       // get string session cookie
       this.sessionCookieStr = result.headers['set-cookie'][0]
     }
 
     /**
-     * enterLoginPage
      * login前的准备
      * 获取sessionid,获取userField, passField, once等
-     *
      * @returns {Promise}
      */
     async enterLoginPage () {
@@ -112,12 +105,9 @@ module.exports = app => {
     }
 
     /**
-     * login
      * login获取签名主方法
-     *
-     * @param {Object} params - 请求参数
-     *   - {String} username - 用户名
-     *   - {String} password - 密码 
+     * @param {String} username - 用户名
+     * @param {String} password - 密码 
      */
     async login ({username, password}) {
       // @step1 进入登录页，获取页面隐藏登录域以及once的值
@@ -159,7 +149,7 @@ module.exports = app => {
       // @step7 设置API返回结果
       return {
         result: success,
-        msg: success ? 'ok' : '登录失败，请确认用户名密码无误！',
+        msg: success ? 'ok' : '登录失败，请确认用户名密码无误',
         data: {
           username: username
         }
@@ -167,15 +157,14 @@ module.exports = app => {
     }
 
     /**
-     * getSigninOnce
      * 获取签到的once值
-     *
      * @param {String} content - 签到页html字符串
      */
     getSigninOnce (content) {
       // update this.once
       const onceRe = /redeem\?once=(\d+)/
       const onces = onceRe.exec(content)
+      /* istanbul ignore next */
       if (onces && onces[1]) {
         this.once = onces[1]
       } else {
@@ -185,11 +174,8 @@ module.exports = app => {
     }
 
     /**
-     * enterSigninPage
      * 进入签到页面，获取once值
-     *
      * @params {Object} {headers} - 复用请求头
-     *
      */
     async enterSigninPage ({headers}) {
       const result = await this.request(this.signinUrl, {
@@ -198,6 +184,7 @@ module.exports = app => {
         headers: headers
       }) 
       // 权限不足，应该是没登录
+      /* istanbul ignore else */
       if (result.status === 302) {
         this.noAuth = true
       }
@@ -207,7 +194,6 @@ module.exports = app => {
     }
 
     /**
-     * signin
      * 签到领金币
      */
     async signin () {
@@ -233,6 +219,7 @@ module.exports = app => {
       }
 
       // @step5 获取请求结果，会302
+      /* istanbul ignore else */
       if (this.once === null) {
         this.ctx.logger.info('未获取到once值,可能是已经签到过了!')
       }
@@ -247,30 +234,36 @@ module.exports = app => {
       const page = await this.request(`${this.signinUrl}`, Object.assign(opts, {
         headers: Object.assign({}, headers, { Referer: 'https://www.v2ex.com/mission/daily/redeem' })
       }))
-      // for debugger
-      // console.log(page, '--------------------------')
 
       // @step7 设置API返回值
       // const htmlContent = page?.data
       const htmlContent = page && page.data
+      const daysMatch = page.data.match(/(已连续登录.*)<\/div>/)
+      const days = daysMatch && daysMatch[1]
+      /* istanbul ignore else */
       if (this.noAuth === true) {
         return {
           result: false,
           msg: '请先登录再签到'
         }
       }
+      /* istanbul ignore next */
       if (htmlContent.includes('已成功领取每日登录奖励')) {
         return {
           result: true,
-          msg: 'ok'
+          msg: 'ok',
+          detail: days || 'ok'
         }
       }
+      /* istanbul ignore next */
       if (this.hasSignin) {
         return {
           result: false,
-          msg: '今天已经签到了'
+          msg: '今天已经签到了',
+          detail: days || ''
         }
       }
+      /* istanbul ignore next */
       return {
         result: false,
         msg: '签到遇到未知错误',

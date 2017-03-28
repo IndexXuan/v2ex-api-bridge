@@ -1,16 +1,18 @@
 /**
- *  @Controller
- *  @Module replies
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Mon 13 Mar 2017 05:28:59 PM CST
  */
 
+/**
+ *  @Controller
+ *  @module Replies
+ */
+
 'use strict'
 
 module.exports = app => {
-  return class RepiesController extends app.Controller {
+  return class RepliesController extends app.Controller {
     /**
      * show
      * 返回一个topic下的全部回复
@@ -42,6 +44,7 @@ module.exports = app => {
       ctx.params = Object.assign(ctx.params, ctx.query)
       ctx.body = await ctx.service.replies.create(ctx.params)
     }
-  } // /.class=>RepiesController
+  } // /.class=>RepliesController
 } // /.exports
+
 

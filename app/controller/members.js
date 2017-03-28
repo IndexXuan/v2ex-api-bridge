@@ -1,10 +1,12 @@
 /**
- *  @Controller
- *  @Module members
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 10 Mar 2017 03:21:40 PM CST
+ */
+
+/**
+ *  @Controller
+ *  @module Members
  */
 
 'use strict'

@@ -1,6 +1,6 @@
 /**
  *  @Test
- *  @Module auth#controller
+ *  @module auth#controller
  *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
@@ -26,7 +26,7 @@ describe('test/app/controller/members.test.js', () => {
 
   it('1 should login success', async () => {
     const r = await request(app.callback())
-      .get('/api/v2/auth/login?username=indexxuantest2&password=xz5818009')
+      .get('/api/v2/auth/login?username=indexxuantest2&password=justtest')
       .expect(200)
 
     const item = r.body
@@ -36,7 +36,19 @@ describe('test/app/controller/members.test.js', () => {
     assert(item.data.username === 'indexxuantest2')
   })
 
-  it('2 should login failed with no username', async () => {
+  it('2 should login failed', async () => {
+    const r = await request(app.callback())
+      .get('/api/v2/auth/login?username=indexxuantest2&password=wrongpassword')
+      .expect(200)
+
+    const item = r.body
+    assert(typeof item === 'object')
+    assert(item.result === false)
+    assert(item.msg === '登录失败，请确认用户名密码无误')
+    assert(item.data.username === 'indexxuantest2')
+  })
+
+  it('3 should login failed with no username', async () => {
     const r = await request(app.callback())
       .get('/api/v2/auth/login?name=notusername&password=waowao')
       .expect(500)
@@ -46,7 +58,7 @@ describe('test/app/controller/members.test.js', () => {
     assert(error.msg === '请传入用户名')
   })
 
-  it('3 should login failed with no password', async () => {
+  it('4 should login failed with no password', async () => {
     const r = await request(app.callback())
       .get('/api/v2/auth/login?username=indexxuantest2&notpassword=waowao')
       .expect(500)
@@ -56,7 +68,7 @@ describe('test/app/controller/members.test.js', () => {
     assert(error.msg === '请传入密码')
   })
 
-  it('4 should signin failed with no cookie in test case', async () => {
+  it('5 should signin failed with no cookie in test case', async () => {
     const r = await request(app.callback())
       .get('/api/v2/auth/signin')
       .expect(200)

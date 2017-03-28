@@ -1,9 +1,12 @@
 /**
- *  @Service topic
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 03 Mar 2017 03:31:22 PM CST
+ */
+
+/**
+ *  @Service
+ *  @module Topics
  */
 
 'use strict'
@@ -109,6 +112,7 @@ module.exports = app => {
     getOnce(content) {
       const onceRe = /name="once" value=\"(\d+)/
       const onces = onceRe.exec(content)
+      /* istanbul ignore next */
       if (onces && onces[1]) {
         this.once = onces[1]
       }
@@ -125,8 +129,12 @@ module.exports = app => {
       // step1 获取准备数据
       const session = this.ctx.sessionid
       const token = this.ctx.token
-      const headers = Object.assign({}, this.ctx.commonHeaders, { Cookie: `${session}; ${token};` })
+      const { tab, others } = this.ctx.commonCookies
+      const headers = Object.assign({}, this.ctx.commonHeaders, { 
+        Cookie: `${session}; ${token}; ${tab}; ${others}`
+      })
 
+      /* istanbul ignore else */
       if (session.includes('undefined')) {
         this.auth = false 
       }
@@ -143,8 +151,8 @@ module.exports = app => {
       // @step3 解析得到once
       this.getOnce(r.data)
 
-      // @step4 设置请求参数, 模仿真实的传送两遍content
-      const data = Object.assign(params, { once: this.once }, { content: params.content })
+      // @step4 设置请求参数
+      const data = Object.assign(params, { once: this.once })
 
       // @step5 发起请求
       const result = await this.ctx.curl(url, {
@@ -155,12 +163,27 @@ module.exports = app => {
       })
 
       // @step6 设置API返回值
-      const success = this.auth && result && result.res && result.res.requestUrls && result.res.requestUrls[0]
-      const msg = !this.auth ? '请先登录再发帖' : success ? 'ok' : '发帖未知错误'
+      let success = false 
+      let topicUrl = result && result.res && result.res.requestUrls && result.res.requestUrls[0]
+      let msg = !this.auth ? '请先登录再发帖' : !!topicUrl ? 'ok' : '发帖未知错误'
+      // parser error msg
+      let problems = result.data.match(/class="problem"\>.*\<\/div>/)
+      let problem = problems && problems[0]
+      // 好牛逼的正则, https://segmentfault.com/q/1010000008733200?_ea=1734789
+      const tagRe = /<("[^"]*"|'[^']*'|[^'">])*>/g 
+      const errorMsg = problem && problem.replace(tagRe, '').replace(/class=".*">/, '')
+      /* istanbul ignore next */
+      if (errorMsg || result.data === '') {
+        msg = errorMsg || `${result.status}，可能是过于频繁操作`
+        success = false
+      } else {
+        success = true
+      }
       return {
-        result: !!success && this.auth,
+        result: this.auth && success,
         msg: msg,
-        url: success
+        url: topicUrl,
+        detail: result
       } 
     }
 
@@ -170,6 +193,7 @@ module.exports = app => {
      *
      * @param {Object} result - 要检查的对象
      */
+    /* istanbul ignore next */
     checkSuccess (result) {
       if (result.status !== 200) {
         const errorMsg = result.data && result.data.message
