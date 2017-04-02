@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Auth.html">Auth</a><ul class='methods'><li data-type='method'><a href="module-Auth.html#~login">login</a></li><li data-type='method'><a href="module-Auth.html#~signin">signin</a></li></ul></li><li><a href="module-Members.html">Members</a><ul class='methods'><li data-type='method'><a href="module-Members.html#~show">show</a></li></ul></li><li><a href="module-Nodes.html">Nodes</a><ul class='methods'><li data-type='method'><a href="module-Nodes.html#~all">all</a></li><li data-type='method'><a href="module-Nodes.html#~show">show</a></li></ul></li><li><a href="module-Profile.html">Profile</a><ul class='methods'><li data-type='method'><a href="module-Profile.html#~all">all</a></li><li data-type='method'><a href="module-Profile.html#~balance">balance</a></li><li data-type='method'><a href="module-Profile.html#~notification">notification</a></li><li data-type='method'><a href="module-Profile.html#~show">show</a></li><li data-type='method'><a href="module-Profile.html#~topics">topics</a></li></ul></li><li><a href="module-Replies.html">Replies</a><ul class='methods'><li data-type='method'><a href="module-Replies.html#~new">new</a></li><li data-type='method'><a href="module-Replies.html#~show">show</a></li></ul></li><li><a href="module-Site.html">Site</a><ul class='methods'><li data-type='method'><a href="module-Site.html#~info">info</a></li><li data-type='method'><a href="module-Site.html#~stats">stats</a></li><li data-type='method'><a href="module-Site.html#~topPlayer">topPlayer</a></li><li data-type='method'><a href="module-Site.html#~topRich">topRich</a></li></ul></li><li><a href="module-Topics.html">Topics</a><ul class='methods'><li data-type='method'><a href="module-Topics.html#~all">all</a></li><li data-type='method'><a href="module-Topics.html#~create">create</a></li><li data-type='method'><a href="module-Topics.html#~hot">hot</a></li><li data-type='method'><a href="module-Topics.html#~latest">latest</a></li><li data-type='method'><a href="module-Topics.html#~show">show</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><p align="center">
+  <a href="https://www.v2ex.com/" target="_blank">
+    <img src="https://v2ex.assets.uxengine.net/site/logo@2x.png?m=1346064962" alt="V2EX" title="V2EX" />
+  </a>
+</p>
+
+<h1 align="center">v2ex-api-bridge</h1>
+
+<p align="center">
+  <a href="https://circleci.com/gh/IndexXuan/v2ex-api-bridge/tree/master">
+    <img src="https://circleci.com/gh/IndexXuan/v2ex-api-bridge/tree/master.svg?style=shield" alt="Build Status">
+  </a>
+  <a href="https://codecov.io/github/IndexXuan/v2ex-api-bridge?branch=master">
+    <img src="https://codecov.io/github/IndexXuan/v2ex-api-bridge/coverage.svg?branch=master" alt="Code Coverage">
+  </a>
+  <img src="https://img.shields.io/badge/Vim-Best%20Editor-green.svg" alt="Vim Best Editor" />
+  <br>
+  <br>
+  <a href="https://github.com/airbnb/javascript">
+    <img src="https://cdn.rawgit.com/feross/standard/master/badge.svg" alt="js-standard-style">
+  </a>
+</p>
+
+<h2>Intro</h2><p><code>V2EX API Bridge</code>: 提供论坛公开API的封装和私有API的挖掘实现，目前已支持 <code>登录，签到，发帖，回帖，财富，消息</code> 等非官方API功能.<br>[Demo:] (https://http://indexxuan.jsonce.com:7001/api/v2/login?username=indexxuantest2&amp;password=justtest)
+目前在线demo只开放登录和签到功能，且开启GET方式请求，demo服务器不会收集你的账号密码，但相信你不会尝试的...(微笑)</p>
+<ul>
+<li><p>see <code>app/router.js</code> to find full router config &amp; demo api links</p>
+</li>
+<li><p>Thanks for：</p>
+</li>
+<li>[official API] (https://www.v2ex.com/p/7v9TEc53)</li>
+<li>[V2EX-API] (https://github.com/djyde/V2EX-API)</li>
+</ul>
+<h2>Development</h2><ul>
+<li>require Node.js 7.6.0+ (async &amp; await)</li>
+<li>recommend <code>yarn install</code></li>
+<li>recommend <a href="https://github.com/creationix/nvm">nvm</a> - the Node.js Version Manager</li>
+</ul>
+<pre class="prettyprint source lang-bash"><code>$ npm install
+$ npm run dev</code></pre><h2>Features</h2><ul>
+<li>✔︎ Full RESTful Style APIs Wrapped</li>
+<li>✔︎ 40+ Case, 100%+ Unit Test(<code>BDD</code>)</li>
+<li>✔︎ Server Hot Reload in Dev</li>
+<li>✔︎ pre-commit hook to run codecov &amp; build jsdoc, host in Github Pages @see <code>package.json#pre-commit</code></li>
+<li>✔︎ CI Support</li>
+</ul>
+<h2>Unit Test</h2><ul>
+<li><code>mocha</code>, <code>thunk-mocha</code>, <code>power-assert</code>, <code>istanbul</code> is build-in to <code>egg-bin</code>, so you can just use it.</li>
+<li><code>power-assert</code> is very powerful, No API is the best API.</li>
+<li>see <a href="https://eggjs.org/core/unittest">egg unit test docs</a> for more detail.</li>
+</ul>
+<h2>npm scripts</h2><ul>
+<li>Use <code>npm start</code> to run server in prod mode</li>
+<li>Use <code>npm run dev</code> to dev</li>
+<li>Use <code>npm run lint</code> to run eslint(eslint not native support es@next now, so...)</li>
+<li>Use <code>npm test</code> to run unit test</li>
+<li>Use <code>npm run cov</code> to run code coverage</li>
+</ul>
+<h2>Todo</h2><ul>
+<li>make <code>pwa</code> using the APIs</li>
+<li>parse the <code>response html</code> to get more private APIs</li>
+<li>improve <code>docs</code></li>
+</ul>
+<h2>Links</h2><ul>
+<li>[V2EX] (https://www.v2ex.com/)</li>
+<li>[egg] (https://github.com/eggjs/egg)</li>
+<li>[egg-bin] (https://github.com/eggjs/egg-bin)</li>
+<li>[mocha] (http://mochajs.org)</li>
+<li>[thunk-mocha] (https://npmjs.com/thunk-mocha)</li>
+<li>[power-assert] (https://github.com/power-assert-js/power-assert)</li>
+<li>[istanbul] (https://github.com/gotwarlost/istanbul)</li>
+<li>[circleci] (https://circleci.com/)</li>
+<li>[codecov] (https://codecov.io/)</li>
+<li>[jsdoc] (https://github.com/jsdoc3/jsdoc)</li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Apr 02 2017 08:49:56 GMT+0800 (CST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

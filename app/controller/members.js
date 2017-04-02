@@ -5,22 +5,24 @@
  */
 
 /**
- *  @Controller
- *  @module Members
+ * @module MembersController
  */
 
 'use strict'
 
 module.exports = app => {
+  /**
+   * @class MembersController
+   * @extends app.Controller
+   */
   return class MembersController extends app.Controller {
     /**
      * show
-     * 查看一个成员信息
-     *
-     * @param {Object} ctx - 请求上下文
-     * @returns {Promise} - @async
+     * @method
+     * @returns {Object}
      */
-    async show (ctx) {
+    async show () {
+      const { ctx } = this
       ctx.validate({
         username: { type: 'string', required: false },
         id: { type: 'id', required: false } 

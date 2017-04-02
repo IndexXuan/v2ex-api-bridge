@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>profile.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Auth.html">Auth</a><ul class='methods'><li data-type='method'><a href="module-Auth.html#~login">login</a></li><li data-type='method'><a href="module-Auth.html#~signin">signin</a></li></ul></li><li><a href="module-Members.html">Members</a><ul class='methods'><li data-type='method'><a href="module-Members.html#~show">show</a></li></ul></li><li><a href="module-Nodes.html">Nodes</a><ul class='methods'><li data-type='method'><a href="module-Nodes.html#~all">all</a></li><li data-type='method'><a href="module-Nodes.html#~show">show</a></li></ul></li><li><a href="module-Profile.html">Profile</a><ul class='methods'><li data-type='method'><a href="module-Profile.html#~all">all</a></li><li data-type='method'><a href="module-Profile.html#~balance">balance</a></li><li data-type='method'><a href="module-Profile.html#~notification">notification</a></li><li data-type='method'><a href="module-Profile.html#~show">show</a></li><li data-type='method'><a href="module-Profile.html#~topics">topics</a></li></ul></li><li><a href="module-Replies.html">Replies</a><ul class='methods'><li data-type='method'><a href="module-Replies.html#~new">new</a></li><li data-type='method'><a href="module-Replies.html#~show">show</a></li></ul></li><li><a href="module-Site.html">Site</a><ul class='methods'><li data-type='method'><a href="module-Site.html#~info">info</a></li><li data-type='method'><a href="module-Site.html#~stats">stats</a></li><li data-type='method'><a href="module-Site.html#~topPlayer">topPlayer</a></li><li data-type='method'><a href="module-Site.html#~topRich">topRich</a></li></ul></li><li><a href="module-Topics.html">Topics</a><ul class='methods'><li data-type='method'><a href="module-Topics.html#~all">all</a></li><li data-type='method'><a href="module-Topics.html#~create">create</a></li><li data-type='method'><a href="module-Topics.html#~hot">hot</a></li><li data-type='method'><a href="module-Topics.html#~latest">latest</a></li><li data-type='method'><a href="module-Topics.html#~show">show</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">profile.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ *  Mail   : indexxuan@gmail.com
+ *  Date   : Fri 13 Mar 2017 03:22:10 PM CST
+ */
+
+/**
+ * @module Profile
+ * @author IndexXuan
+ */
+
+'use strict'
+
+module.exports = app => prefix => {
+  /**
+   * 返回本人全部信息，包含发布的主题，回复的主题，财富收支，消息通知等
+   * @method all 
+   *
+   * @example
+   * GET /api/v2/profile/all
+   *
+   * Array&lt;Object> 
+   * [{
+   *   "id": 4096325,
+   *   "thanks": 0,
+   *   "content": "站长辛苦了😆😆😆",
+   *   "content_rendered": "站长辛苦了😆😆😆",
+   *   "member": {
+   *     "id": 154020,
+   *     "username": "misaka19000",
+   *     "tagline": "",
+   *     "avatar_mini": "//v2ex.assets.uxengine.net/avatar/4271/6be2/154020_mini.png?m=1479258611",
+   *     "avatar_normal": "//v2ex.assets.uxengine.net/avatar/4271/6be2/154020_normal.png?m=1479258611",
+   *     "avatar_large": "//v2ex.assets.uxengine.net/avatar/4271/6be2/154020_large.png?m=1479258611"
+   *   },
+   *   "created": 1488489066,
+   *   "last_modified": 1488489066
+   * }, {me
+   * ...
+   * }]
+   */
+  app.get('v2ex', `${prefix}/profile/all`, 'profile.all')
+
+  /**
+   * 返回本人发布的所有主题
+   * @method topics 
+   *
+   * @example
+   * GET /api/v2/profile/topics
+   *
+   * Array&lt;Object> 
+   * [{
+   * }]
+   */
+  app.get('v2ex', `${prefix}/profile/topics`, 'profile.topics')
+
+  /**
+   * 返回本人的所有回复
+   * @method show
+   *
+   * @example
+   * GET /api/v2/profile/replies
+   *
+   * Array&lt;Object> 
+   * [{
+   * }]
+   */
+  app.get('v2ex', `${prefix}/profile/replies`, 'profile.replies')
+
+  /**
+   * 返回本人所有收支情况
+   * @method balance
+   *
+   * @example
+   * GET /api/v2/profile/balance
+   *
+   * Array&lt;Object> 
+   * [{
+   * }]
+   */
+  app.get('v2ex', `${prefix}/profile/balance`, 'profile.balance')
+
+  /**
+   * 返回本人所有的消息通知
+   * @method notification 
+   *
+   * @example
+   * GET /api/v2/profile/notification
+   *
+   * Array&lt;Object> 
+   * [{
+   * }]
+   */
+  app.get('v2ex', `${prefix}/profile/notification`, 'profile.notification')
+} // /.exports
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Apr 02 2017 08:49:56 GMT+0800 (CST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

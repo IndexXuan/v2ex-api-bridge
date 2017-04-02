@@ -1,9 +1,7 @@
 /**
- *  @Router Config
- *  ---------------------------------------------
  *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
- *  Date   : Fri 03 Mar 2017 03:22:10 PM CST
+ *  Date   : Fri 13 Mar 2017 03:22:10 PM CST
  */
 
 'use strict'
@@ -12,39 +10,13 @@ module.exports = app => {
 
   const prefix = '/api/v2'
 
-  // @auth 
-  app.post('v2ex', `${prefix}/auth/login`, 'auth.login')
-  app.get('v2ex', `${prefix}/auth/login`, 'auth.login') // for test
-  app.post('v2ex', `${prefix}/auth/login`, 'auth.login')
-  app.get('v2ex', `${prefix}/auth/signin`, 'auth.signin') // for test
-  
-  // @site
-  app.get('v2ex', `${prefix}/site/info`, 'site.info')
-  app.get('v2ex', `${prefix}/site/stats`, 'site.stats')
-
-  // @members
-  app.get('v2ex', `${prefix}/members/username/:username`, 'members.show')
-  app.get('v2ex', `${prefix}/members/id/:id`, 'members.show')
-
-  // @nodes
-  app.get('v2ex', `${prefix}/nodes/all`, 'nodes.all')
-  app.get('v2ex', `${prefix}/nodes/id/:id`, 'nodes.show')
-  app.get('v2ex', `${prefix}/nodes/name/:name`, 'nodes.show')
-
-  // @topics
-  app.get('v2ex', `${prefix}/topics/latest`, 'topics.latest')
-  app.get('v2ex', `${prefix}/topics/hot`, 'topics.hot')
-  app.get('v2ex', `${prefix}/topics/:id`, 'topics.show')
-  app.get('v2ex', `${prefix}/topics/all/:type/:value`, 'topics.getAllByType')
-  // auth required
-  app.post('v2ex', `${prefix}/topics/new`, 'topics.create')
-  app.get('v2ex', `${prefix}/topics/new`, 'topics.create') // for test, 谨慎实验
-
-  // @replies
-  app.get('v2ex', `${prefix}/replies/:topic_id`, 'replies.show')
-  // auth required
-  app.post('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create')
-  // app.get('v2ex', `${prefix}/replies/:topic_id/new`, 'replies.create') // for test, 谨慎实验
+  require('./api/auth')(app)(prefix)
+  require('./api/profile')(app)(prefix)
+  require('./api/site')(app)(prefix)
+  require('./api/members')(app)(prefix)
+  require('./api/nodes')(app)(prefix)
+  require('./api/topics')(app)(prefix)
+  require('./api/replies')(app)(prefix)
 
   /**
    * @examples

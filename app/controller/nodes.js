@@ -5,34 +5,33 @@
  */
 
 /**
- *  @Controller
- *  @module Nodes
+ * @module NodesController
  */
 
 'use strict'
 
 module.exports = app => {
+  /**
+   * @class NodesController
+   * @extends app.Controller
+   */
   return class NodesController extends app.Controller {
     /**
-     * all
-     * 返回全部节点
-     *
-     * @param {Object} ctx - 请求上下文
-     * @returns {Promise}－@async
+     * 全部节点 
+     * @method
+     * @returns {Array<Object>}
      */
-    async all (ctx) {
+    async all () {
+      const { ctx } = this
       ctx.body = await ctx.service.nodes.all()
     }
-
     /**
      * show
-     * 返回一个特定节点信息
-     * @oneof: [ 'id', 'name' ]
-     *
-     * @param {Object} ctx - 请求上下文
-     * @returns {Promise}－@async
+     * @method
+     * @returns {Object}
      */
-    async show (ctx) {
+    async show () {
+      const { ctx } = this
       // validator
       ctx.validate({
         id: { type: 'id', required: false },

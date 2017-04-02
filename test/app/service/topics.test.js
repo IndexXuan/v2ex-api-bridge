@@ -50,10 +50,10 @@ describe('test/app/service/topics.test.js', async () => {
 
   it('4 should get all topics by username Livid', async () => {
     const topics = await ctx.service.topics.getAllByType({ type: 'username', value: 'Livid' })
-    const item = topics.filter(item => item.id === 344499)[0]
-    assert(item.id === 344499)
-    assert(item.content.includes('北京时间'))
-    assert(item.created === 1488488531)
+    const item = topics[0]
+    assert(typeof item.id === 'number')
+    assert(typeof item.content === 'string')
+    assert(typeof item.created === 'number')
   })
 
   it('5 should get all topics by node_name', async () => {

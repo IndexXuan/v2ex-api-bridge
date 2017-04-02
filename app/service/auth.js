@@ -1,12 +1,10 @@
 /**
- *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Tue 14 Mar 2017 03:19:07 PM CST
  */
 
 /**
- *  @Service
- *  @module Auth
+ * @module AuthService
  */
 
 'use strict'
@@ -16,7 +14,7 @@ const setCookieParser = require('set-cookie-parser')
 
 module.exports = app => {
   /**
-   * Auth Service Class
+   * @class AuthService
    * @extends app.Service
    */
   return class AuthService extends app.Service {
@@ -42,6 +40,7 @@ module.exports = app => {
 
     /**
      * 封装统一的请求方法
+     * @member
      * @param {String} url - 请求地址
      * @param {Object} opts - 请求选项
      * @returns {Promise}
@@ -56,6 +55,7 @@ module.exports = app => {
 
     /**
      * 请求首页来刷新sessionid cookie
+     * @member
      * @returns {Promise}
      */
     async enterHomePage () {
@@ -74,6 +74,7 @@ module.exports = app => {
 
     /**
      * 获取登录的各种凭证
+     * @member
      * @param {String} result - 请求登录页返回的response，包含html字符串和Headers
      */
     getLoginFields (result) {
@@ -90,9 +91,9 @@ module.exports = app => {
     }
 
     /**
-     * login前的准备
-     * 获取sessionid,获取userField, passField, once等
-     * @returns {Promise}
+     * 获取sessionid,获取userField, passField, once等，为登录做准备
+     * @member
+     * @returns {Promise|void}
      */
     async enterLoginPage () {
       const result = await this.request(this.loginUrl, {
@@ -105,7 +106,8 @@ module.exports = app => {
     }
 
     /**
-     * login获取签名主方法
+     * login获取权限签名主方法
+     * @method
      * @param {String} username - 用户名
      * @param {String} password - 密码 
      */
@@ -146,6 +148,11 @@ module.exports = app => {
         })
       })
 
+      // set base64(username) in cookie
+      this.ctx.cookies.set('vn', btoa(username), {
+        httpOnly: true
+      })
+
       // @step7 设置API返回结果
       return {
         result: success,
@@ -158,6 +165,7 @@ module.exports = app => {
 
     /**
      * 获取签到的once值
+     * @member
      * @param {String} content - 签到页html字符串
      */
     getSigninOnce (content) {
@@ -175,6 +183,7 @@ module.exports = app => {
 
     /**
      * 进入签到页面，获取once值
+     * @member
      * @params {Object} {headers} - 复用请求头
      */
     async enterSigninPage ({headers}) {
@@ -195,6 +204,7 @@ module.exports = app => {
 
     /**
      * 签到领金币
+     * @method
      */
     async signin () {
       // @step1 获取客户端凭证和各种cookies
@@ -252,7 +262,10 @@ module.exports = app => {
         return {
           result: true,
           msg: 'ok',
-          detail: days || 'ok'
+          data: {
+            username: this.ctx.helper.getCurrentUserName(),
+            detail: days || 'ok'
+          }
         }
       }
       /* istanbul ignore next */
@@ -260,14 +273,17 @@ module.exports = app => {
         return {
           result: false,
           msg: '今天已经签到了',
-          detail: days || ''
+          data: {
+            username: this.ctx.helper.getCurrentUserName(),
+            detail: days || 'ok'
+          }
         }
       }
       /* istanbul ignore next */
       return {
         result: false,
         msg: '签到遇到未知错误',
-        detail: page
+        detail: app.config.env === 'prod' ? '' : page 
       }
     } // method#signin
   } // /.class=>AuthService

@@ -5,22 +5,24 @@
  */
 
 /**
- *  @Controller
- *  @module Replies
+ * @module ReplieController
  */
 
 'use strict'
 
 module.exports = app => {
+  /**
+   * @class RepliesController
+   * @extends app.Controller
+   */
   return class RepliesController extends app.Controller {
     /**
-     * show
-     * 返回一个topic下的全部回复
-     *
-     * @param {Objet} ctx - 请求上下文
-     * @returns {Promise} - @async
+     * 获取某个topics下的全部回复 
+     * @method
+     * @returns {Array<Object>}
      */
-    async show (ctx) {
+    async show () {
+      const { ctx } = this
       ctx.validate({
         topic_id: { type: 'id', required: true }
       }, ctx.params)
@@ -30,13 +32,12 @@ module.exports = app => {
     }
 
     /**
-     * create
-     * 创建一个topic下的最新回复
-     *
-     * @param {Object} ctx - 请求上下文
-     * @returns {Promise} - @async
+     * 创建回复
+     * @method
+     * @returns {Object}
      */
-    async create (ctx) {
+    async create () {
+      const { ctx } = this
       ctx.validate({
         topic_id: { type: 'id', required: true }
       }, ctx.params)

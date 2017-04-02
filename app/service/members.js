@@ -5,18 +5,19 @@
  */
 
 /**
- *  @Service
- *  @module Members
+ *  @module MembersService
  */
 
 'use strict'
 
 module.exports = app => {
-  return class MemberService extends app.Service {
+  /**
+   * @class MembersService
+   * @extends app.Service
+   */
+  return class MembersService extends app.Service {
     /**
-     * @Constructor
-     * 构造器
-     *
+     * @constructor
      * @param {Object} ctx - 请求上下文
      */
     constructor (ctx) {
@@ -27,7 +28,7 @@ module.exports = app => {
     /**
      * request
      * 封装统一的请求方法
-     *
+     * @member
      * @param {String} query - 请求参数
      * @param {Object} opts - 请求参数
      * @returns {Promise} - @async
@@ -45,7 +46,7 @@ module.exports = app => {
     /**
      * show
      * 获取一个用户信息
-     *
+     * @method
      * @param param
      * @returns {Promise} - @async
      */
@@ -61,7 +62,7 @@ module.exports = app => {
     /**
      * checkSuccess
      * 封装统一的调用检查函数
-     *
+     * @member
      * @param {Object} result - 要检查的数据
      */
     /* istanbul ignore next */
@@ -77,7 +78,6 @@ module.exports = app => {
         this.ctx.throw(500, 'remote response error', { data: result.data, message: result.data.message })
       }
     }
-
-  } // /.class=>MemberService
+  } // /.class=>MembersService
 } // /.exports
 

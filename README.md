@@ -23,7 +23,8 @@
 
 ## Intro
 
-`V2EX API Bridge`: 提供论坛公开API的封装和私有API的挖掘实现，目前已支持 `登录，签到，发帖，回帖` 等非官方API功能.  
+`V2EX API Bridge`: 提供论坛公开API的封装和私有API的挖掘实现，目前已支持 `登录，签到，发帖，回帖，账户，消息` 等非官方API功能.  
+* see `app/router.js` to find full router config & demo api links
 
 - Thanks for：
 - [official API] (https://www.v2ex.com/p/7v9TEc53)
@@ -32,22 +33,25 @@
 ## Development
 
 - require Node.js 7.6.0+ (async & await)
-- recommend yarn install
+- recommend `yarn install`
 - recommend [nvm](https://github.com/creationix/nvm) - the Node.js Version Manager
 
 ```bash
 $ npm install
 $ npm run dev
 ```
-* see `app/router.js` to find full router config & demo api links
-
 ## Features
 
-- ✔︎ Full APIs Wrapped
-- ✔︎ RESTful Style
-- ✔︎ 30+ Case, 100%+ Unit Test(`BDD`)
-- ✔︎ Hot Reload in Dev
-- ✔︎ pre-commit hook to run cov & build docs and host in Github Pages @see `package.json`
+- ✔︎ Full RESTful Style APIs Wrapped
+- ✔︎ 40+ Case, 95%+ Unit Test(`BDD`) with Docs
+- ✔︎ Server Hot Reload in Dev
+- ✔︎ pre-commit hook to run codecov & build jsdoc, host in Github Pages @see `package.json#pre-commit`
+- ✔︎ CI Support
+
+## Docs
+
+- ✔︎ Public API Docs  - [go] (https://indexxuan.github.io/v2ex-api-bridge/api/index.html)
+- ✔︎ Project Dev Docs - [go] (https://indexxuan.github.io/v2ex-api-bridge/project/index.html)
 
 ## Unit Test
 
@@ -57,16 +61,18 @@ $ npm run dev
 
 ## npm scripts
 
-- Use `npm start` to run server
+- Use `npm start` to run server in prod mode
 - Use `npm run dev` to dev
-- Use `npm run lint` to run eslint(eslint not native support es@next now)
+- Use `npm run lint` to run eslint(eslint not native support es@next now, so...)
 - Use `npm test` to run unit test
-- Use `npm run cov` to run cov
+- Use `npm run cov` to run code coverage
 
 ## Todo
 
-- make `pwa` using the APIs
 - parse the `response html` to get more private APIs
+- improve `docs` and 'codecov'
+- make `pwa` using the APIs
+- make it more `egg best practice`
 
 ## Links
 
@@ -77,4 +83,7 @@ $ npm run dev
 - [thunk-mocha] (https://npmjs.com/thunk-mocha)
 - [power-assert] (https://github.com/power-assert-js/power-assert)
 - [istanbul] (https://github.com/gotwarlost/istanbul)
+- [circleci] (https://circleci.com/)
+- [codecov] (https://codecov.io/)
+- [jsdoc] (https://github.com/jsdoc3/jsdoc)
 

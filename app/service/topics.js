@@ -1,22 +1,22 @@
 /**
- *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 03 Mar 2017 03:31:22 PM CST
  */
 
 /**
- *  @Service
- *  @module Topics
+ *  @module TopicsService
  */
 
 'use strict'
 
 module.exports = app => {
+  /**
+   * @class TopicsService
+   * @extends app.Service
+   */
   return class TopicsService extends app.Service {
     /**
-     * @Constructor
-     * 构造器
-     *
+     * @constructor
      * @param {Object} ctx - 请求的上下文
      */
     constructor (ctx) {
@@ -31,7 +31,7 @@ module.exports = app => {
     /**
      * request
      * 封装统一的请求方法
-     *
+     * @member
      * @param {String} query - 请求参数
      * @param {Object} opts - 请求选项
      * @returns {Promise} - @async
@@ -49,8 +49,8 @@ module.exports = app => {
     /**
      * latest
      * 获取最新的topics
-     *
-     * @returns {Promise} - @async
+     * @method
+     * @returns {Promise|Object}
      */
     async latest () {
       const result = await this.request('latest')
@@ -61,8 +61,8 @@ module.exports = app => {
     /**
      * hot
      * 获取最热的topics
-     *
-     * @returns {Promise} - @async
+     * @method
+     * @returns {Promise|Array<Object>}
      */
     async hot () {
       const result = await this.request('hot')
@@ -72,10 +72,10 @@ module.exports = app => {
 
     /**
      * show
-     * 获取一篇topic
-     *
+     * 抓取一篇topic
+     * @method
      * @param {Object} params - 参数
-     * @returns {Promise} - @async
+     * @returns {Promise|Object}
      */
     async show (params) {
       const result = await this.request('show', {
@@ -88,9 +88,9 @@ module.exports = app => {
     /**
      * getAllByType
      * 根据类型获取其全部topics enums: [ username, node_name, node_id ]
-     *
+     * @method
      * @param {Object} params - 参数
-     * @returns {Promise} - @async
+     * @returns {Promise|Array<Object>}
      */
     async getAllByType (params) {
       const data = {}
@@ -106,7 +106,7 @@ module.exports = app => {
     /**
      * getOnce
      * 获取一次性签名的工具方法
-     *
+     * @member
      * @param {String} content - 需要解析的内容
      */
     getOnce(content) {
@@ -121,9 +121,9 @@ module.exports = app => {
     /**
      * create
      * 创建一篇topic
-     *
+     * @method
      * @param {Object} params - 参数
-     * @returns {Object} - @async
+     * @returns {Promise|Object}
      */
     async create (params) {
       // step1 获取准备数据
@@ -164,16 +164,20 @@ module.exports = app => {
 
       // @step6 设置API返回值
       let success = false 
-      let topicUrl = result && result.res && result.res.requestUrls && result.res.requestUrls[0]
+      let topicUrl = ''
+      /* istanbul ignore next */
+      if (result && result.headers && result.headers.location) {
+        topicUrl = `https://www.v2ex.com${result.headers.location}`
+      }
       let msg = !this.auth ? '请先登录再发帖' : !!topicUrl ? 'ok' : '发帖未知错误'
       // parser error msg
       let problems = result.data.match(/class="problem"\>.*\<\/div>/)
       let problem = problems && problems[0]
-      // 好牛逼的正则, https://segmentfault.com/q/1010000008733200?_ea=1734789
+      // 好牛逼的HTML标签正则, https://segmentfault.com/q/1010000008733200?_ea=1734789
       const tagRe = /<("[^"]*"|'[^']*'|[^'">])*>/g 
       const errorMsg = problem && problem.replace(tagRe, '').replace(/class=".*">/, '')
       /* istanbul ignore next */
-      if (errorMsg || result.data === '') {
+      if (errorMsg) {
         msg = errorMsg || `${result.status}，可能是过于频繁操作`
         success = false
       } else {
@@ -183,14 +187,14 @@ module.exports = app => {
         result: this.auth && success,
         msg: msg,
         url: topicUrl,
-        detail: result
+        detail: app.config.env === 'prod' ? '' : result
       } 
     }
 
     /**
      * checkSuccess
      * 封装统一的调用检查函数
-     *
+     * @member
      * @param {Object} result - 要检查的对象
      */
     /* istanbul ignore next */

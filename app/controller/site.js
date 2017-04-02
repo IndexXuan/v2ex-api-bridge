@@ -1,38 +1,60 @@
 /**
- *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 10 Mar 2017 02:18:42 PM CST
  */
 
 /**
- *  @Controller 
- *  @module Site
+ * @module SiteController
  */
 
 'use strict'
 
 module.exports = app => {
+  /**
+   * @class SiteController
+   * @extends app.Controller
+   */
   return class SiteController extends app.Controller {
     /**
-     * info
-     * 返回站点信息
-     *
-     * @param {Object} ctx - 请求上下文
-     * @returns {Promise} - @async
+     * 站点信息
+     * @method
+     * @returns {Object}
      */
-    async info (ctx) {
+    async info () {
+      const { ctx } = this
       ctx.body = await ctx.service.site.info()
     }
 
     /**
-     * stats
-     * 返回站点状态
-     *
-     * @param {Object} ctx - 请求上下文
-     * @returns {Promise} - @async
+     * 获取站点状态
+     * @method
+     * @returns {Object}
      */
-    async stats (ctx) {
+    async stats () {
+      const { ctx } = this
       ctx.body = await ctx.service.site.stats()
+    }
+
+    /**
+     * 获取财富榜
+     * @method
+     * @returns {Array<Object>}
+     */
+    /* istanbul ignore next */
+    async topRich () {
+      const { ctx } = this
+      ctx.body = await ctx.service.site.topRich()
+    }
+
+    /**
+     * 获取消费榜
+     * @method
+     * @returns {Array<Object>}
+     */
+    /* istanbul ignore next */
+    async topPlayer () {
+      const { ctx } = this
+      ctx.body = await ctx.service.site.topPlayer()
     }
   } // /.class=>SiteController
 } // /.exports

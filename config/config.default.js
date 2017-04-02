@@ -19,6 +19,9 @@ module.exports = appInfo => {
 
   config.keys = appInfo.name + '123456'
 
+  // V2EX Base Url
+  config.baseUrl = 'https://www.v2ex.com'
+
   // apiBaseUrl
   config.root = 'https://www.v2ex.com/api'
 

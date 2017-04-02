@@ -1,22 +1,22 @@
 /**
- *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Mon 13 Mar 2017 05:35:26 PM CST
  */
 
 /**
- *  @Service
- *  @module Replies
+ *  @module RepliesService
  */
 
 'use strict'
 
 module.exports = app => {
+  /**
+   * @class RepliesService
+   * @extends app.Service
+   */
   return class RepliesService extends app.Service {
     /**
-     * @Constructor
-     * 构造器
-     *
+     * @constructor
      * @param {Object} ctx - 请求的上下文
      */
     constructor (ctx) {
@@ -31,7 +31,7 @@ module.exports = app => {
     /**
      * request
      * 封装统一的请求方法
-     *
+     * @member
      * @param {String} query - 请求参数
      * @param {Object} opts - 请求选项
      * @returns {Promise} - @async
@@ -49,7 +49,7 @@ module.exports = app => {
     /**
      * show
      * 获取一个topic的全部回复
-     *
+     * @method
      * @param {Object} params - 参数
      * @returns {Promise} - @async
      */
@@ -63,7 +63,7 @@ module.exports = app => {
     /**
      * getOnce
      * 获取一次性签名的工具方法
-     *
+     * @member
      * @param {String} content - 需要解析的内容
      */
     getOnce(content) {
@@ -78,9 +78,9 @@ module.exports = app => {
     /**
      * create
      * 创建一个回复
-     *
+     * @method
      * @param {Object} params - 参数
-     * @returns {Promise} - @async
+     * @returns {Promise}
      */
     async create (params) {
       // @step1 获取准备数据
@@ -118,12 +118,31 @@ module.exports = app => {
       })
 
       // @step6 设置API返回值
-      const success = result && result.res && result.res.requestUrls && result.res.requestUrls[0]
-      const msg = !this.auth ? '请先登录再回帖' : success ? 'ok' : '回帖未知错误'
+      let success = false 
+      let topicUrl = ''
+      /* istanbul ignore next */
+      if (result && result.headers && result.headers.location) {
+        topicUrl = `https://www.v2ex.com${result.headers.location}`
+      }
+      let msg = !this.auth ? '请先登录再回帖' : !!topicUrl ? 'ok' : '回帖未知错误'
+      // parser error msg
+      let problems = result.data.match(/class="problem"\>.*\<\/div>/)
+      let problem = problems && problems[0]
+      // 好牛逼的HTML标签正则, https://segmentfault.com/q/1010000008733200?_ea=1734789
+      const tagRe = /<("[^"]*"|'[^']*'|[^'">])*>/g 
+      const errorMsg = problem && problem.replace(tagRe, '').replace(/class=".*">/, '')
+      /* istanbul ignore next */
+      if (errorMsg) {
+        msg = errorMsg || `${result.status}，可能是过于频繁操作`
+        success = false
+      } else {
+        success = true
+      }
       return {
-        result: !!success && this.auth,
+        result: this.auth && success,
         msg: msg,
-        url: success
+        url: topicUrl,
+        detail: app.config.env === 'prod' ? '' : result
       } 
     }
   } // /.class=>RepliesService

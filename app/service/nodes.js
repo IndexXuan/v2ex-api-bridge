@@ -1,22 +1,22 @@
 /**
- *  Author : IndexXuan(https://github.com/IndexXuan)
  *  Mail   : indexxuan@gmail.com
  *  Date   : Fri 10 Mar 2017 02:41:56 PM CST
  */
 
 /**
- *  @Service
- *  @module Nodes
+ *  @module NodesService
  */
 
 'use strict'
 
 module.exports = app => {
+  /**
+   * @class NodesService
+   * @extends app.Service
+   */
   return class NodeService extends app.Service {
     /**
-     * @Constructor
-     * 构造器
-     *
+     * @constructor
      * @param {Object} ctx - 请求上下文
      */
     constructor (ctx) {
@@ -27,7 +27,7 @@ module.exports = app => {
     /**
      * request
      * 封装统一的请求方法
-     *
+     * @member
      * @param {String} query - 请求参数
      * @param {Object} opts - 请求参数
      * @returns {Promise} - @async
@@ -45,9 +45,8 @@ module.exports = app => {
     /**
      * all
      * 获取全部节点
-     *
-     * @async
-     * @returns {Promise} - @async
+     * @method
+     * @returns {Object}
      */
     async all () {
       const result = await this.request('all')
@@ -59,11 +58,9 @@ module.exports = app => {
     /**
      * show
      * 获取某节点信息
-     *
+     * @method
      * @param params
-     *
-     * @async
-     * @returns {Promise} - @async
+     * @returns {Object}
      */
     async show (params) {
       const data = {}
@@ -84,7 +81,7 @@ module.exports = app => {
     /**
      * checkSuccess
      * 封装统一的调用检查函数
-     *
+     * @member
      * @param {Object} result - 要检查的数据
      */
     /* istanbul ignore next */

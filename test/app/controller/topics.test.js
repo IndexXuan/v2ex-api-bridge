@@ -71,10 +71,10 @@ describe('test/app/controller/topics.test.js', () => {
       .expect(200)
 
     assert(Array.isArray(r.body))
-    const item = r.body.filter(item => item.id === 344499)[0]
-    assert(item.id === 344499)
-    assert(item.created === 1488488531)
-    assert(item.title === "20170303 - 关于大约持续了 16 个小时的登录问题")
+    const item = r.body[0]
+    assert(typeof item.id === 'number')
+    assert(typeof item.created === 'number')
+    assert(typeof item.title === 'string')
   })
 
   it('5 should return all vim\'s topics by node_name', async () => {

@@ -1,0 +1,22 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc"]
+  },
+  "source": {
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": ["node_modules/jsdoc-strip-async-await"],
+  "opts": {
+      "template": "node_modules/docdash",
+      "encoding": "utf8",
+      "destination": "docs/project/",
+      "recurse": true,
+      "verbose": true
+   },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  }
+}
